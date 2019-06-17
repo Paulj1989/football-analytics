@@ -1,73 +1,73 @@
 Year,Season,League,Spend
 2019,18/19,Bundesliga,561.1
-2019,18/19,La Liga,1000
-2019,18/19,Premier League,1660
-2019,18/19,Serie A,1280
-2019,18/19,Ligue 1,663.34
-2019,18/19,Championship,230.88
 2018,17/18,Bundesliga,749.29
-2018,17/18,La Liga,890.72
-2018,17/18,Premier League,2170
-2018,17/18,Serie A,1030
-2018,17/18,Ligue 1,743.46
-2018,17/18,Championship,285
 2017,16/17,Bundesliga,675.14
-2017,16/17,La Liga,526.29
-2017,16/17,Premier League,1660
-2017,16/17,Serie A,866.46
-2017,16/17,Ligue 1,357.77
-2017,16/17,Championship,354.19
 2016,15/16,Bundesliga,474.15
-2016,15/16,La Liga,620.43
-2016,15/16,Premier League,1460
-2016,15/16,Serie A,724.6
-2016,15/16,Ligue 1,363.7
-2016,15/16,Championship,205.05
 2015,14/15,Bundesliga,368.28
-2015,14/15,La Liga,544.17
-2015,14/15,Premier League,1220
-2015,14/15,Serie A,471.08
-2015,14/15,Ligue 1,174.11
-2015,14/15,Championship,143.85
 2014,13/14,Bundesliga,305.4
-2014,13/14,La Liga,449.68
-2014,13/14,Premier League,924.53
-2014,13/14,Serie A,570.21
-2014,13/14,Ligue 1,413.58
-2014,13/14,Championship,48.48
 2013,12/13,Bundesliga,289.11
-2013,12/13,La Liga,163.92
-2013,12/13,Premier League,775.03
-2013,12/13,Serie A,566.21
-2013,12/13,Ligue 1,260.4
-2013,12/13,Championship,100.28
 2012,11/12,Bundesliga,222.42
-2012,11/12,La Liga,399.62
-2012,11/12,Premier League,640.22
-2012,11/12,Serie A,621.28
-2012,11/12,Ligue 1,246.94
-2012,11/12,Championship,76.74
 2011,10/11,Bundesliga,213.79
-2011,10/11,La Liga,314.23
-2011,10/11,Premier League,698.9
-2011,10/11,Serie A,469.66
-2011,10/11,Ligue 1,153.92
-2011,10/11,Championship,59.06
 2010,09/10,Bundesliga,245.96
-2010,09/10,La Liga,505.03
-2010,09/10,Premier League,593.77
-2010,09/10,Serie A,545.22
-2010,09/10,Ligue 1,270.47
-2010,09/10,Championship,84.89
 2009,08/09,Bundesliga,182.75
-2009,08/09,La Liga,391.22
-2009,08/09,Premier League,855.96
-2009,08/09,Serie A,598.52
-2009,08/09,Ligue 1,258.04
-2009,08/09,Championship,74.59
 2008,07/08,Bundesliga,271.51
-2008,07/08,La Liga,571.55
-2008,07/08,Premier League,936.66
-2008,07/08,Serie A,440.46
-2008,07/08,Ligue 1,253.15
+2019,18/19,Championship,230.88
+2018,17/18,Championship,285
+2017,16/17,Championship,354.19
+2016,15/16,Championship,205.05
+2015,14/15,Championship,143.85
+2014,13/14,Championship,48.48
+2013,12/13,Championship,100.28
+2012,11/12,Championship,76.74
+2011,10/11,Championship,59.06
+2010,09/10,Championship,84.89
+2009,08/09,Championship,74.59
 2008,07/08,Championship,128.63
+2019,18/19,La Liga,1000
+2018,17/18,La Liga,890.72
+2017,16/17,La Liga,526.29
+2016,15/16,La Liga,620.43
+2015,14/15,La Liga,544.17
+2014,13/14,La Liga,449.68
+2013,12/13,La Liga,163.92
+2012,11/12,La Liga,399.62
+2011,10/11,La Liga,314.23
+2010,09/10,La Liga,505.03
+2009,08/09,La Liga,391.22
+2008,07/08,La Liga,571.55
+2019,18/19,Ligue 1,663.34
+2018,17/18,Ligue 1,743.46
+2017,16/17,Ligue 1,357.77
+2016,15/16,Ligue 1,363.7
+2015,14/15,Ligue 1,174.11
+2014,13/14,Ligue 1,413.58
+2013,12/13,Ligue 1,260.4
+2012,11/12,Ligue 1,246.94
+2011,10/11,Ligue 1,153.92
+2010,09/10,Ligue 1,270.47
+2009,08/09,Ligue 1,258.04
+2008,07/08,Ligue 1,253.15
+2019,18/19,Premier League,1660
+2018,17/18,Premier League,2170
+2017,16/17,Premier League,1660
+2016,15/16,Premier League,1460
+2015,14/15,Premier League,1220
+2014,13/14,Premier League,924.53
+2013,12/13,Premier League,775.03
+2012,11/12,Premier League,640.22
+2011,10/11,Premier League,698.9
+2010,09/10,Premier League,593.77
+2009,08/09,Premier League,855.96
+2008,07/08,Premier League,936.66
+2019,18/19,Serie A,1280
+2018,17/18,Serie A,1030
+2017,16/17,Serie A,866.46
+2016,15/16,Serie A,724.6
+2015,14/15,Serie A,471.08
+2014,13/14,Serie A,570.21
+2013,12/13,Serie A,566.21
+2012,11/12,Serie A,621.28
+2011,10/11,Serie A,469.66
+2010,09/10,Serie A,545.22
+2009,08/09,Serie A,598.52
+2008,07/08,Serie A,440.46

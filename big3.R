@@ -27,7 +27,7 @@ pts_all <- ggplot(big3)+
   theme_ipsum(base_size = 18, axis_title_size = 18)+
   labs(y = "", x = "Points")+
   xlim(0,120)+
-  scale_fill_viridis_d(name=NULL,
+  scale_fill_calc(name=NULL,
                       labels=c("Bundesliga", "Premier League", "La Liga"))
 pts_all
 
