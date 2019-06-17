@@ -1,4 +1,6 @@
-facet_pts <- ggplot(big3, aes(pts, fill = year))+
+time3$year <- as.factor(time3$year)
+
+facet_pts <- ggplot(time3, aes(pts, fill = year))+
   geom_density(alpha=0.5)+
   theme_ipsum(plot_title_face = "plain", 
               plot_title_size = 20, 
@@ -12,11 +14,10 @@ facet_pts <- ggplot(big3, aes(pts, fill = year))+
   xlim(16,100)+
   coord_cartesian(xlim = c(19,99.5))+
   labs(title = NULL, y = NULL, x = "Points")+
-  scale_fill_viridis_d(labels = c("14/15", "15/16", "16/17", "17/18", "18/19")) + 
+  scale_fill_viridis_d() + 
   facet_wrap(~country, nrow = 3)
 facet_pts
 
-summary(big3$pts)
 
 facet_value <- ggplot(big3, aes(value, fill = year))+
   geom_density(alpha=0.5)+
