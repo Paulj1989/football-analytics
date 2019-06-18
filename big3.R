@@ -4,9 +4,8 @@ library(tidyverse)
 library(ggpubr)
 library(hrbrthemes)
 library(ineq)
-install.packages("gganimate")
 library(gganimate)
-library(gapminder)
+
 
 big3 <- read_csv("~/Documents/FTW/big3.csv")
 big3$year <- as.factor(big3$year)
