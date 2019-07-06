@@ -21,6 +21,3 @@ ggplot(ucl_compete, aes(Pts, ASD)) +
         legend.position="bottom",
         plot.margin = margin(30, 30, 30, 30))
 
-
-plot.subtitle = element_text(size = 15),
-axis.title = element_text(size = 15),
