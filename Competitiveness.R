@@ -21,12 +21,13 @@ ggthemr('greyscale', layout = "scientific", text_size = 25)
 facet_pts <- ggplot(time, aes(pts, color = year))+
   geom_density(alpha=0.6, size = 0.8)+
   theme(legend.title = element_blank(),
+        plot.title = element_text(face = "plain"),
         legend.position = "bottom",
         legend.box.spacing = unit(0.005, "cm"),
         legend.key.size = unit(0.7, "cm"))+
   xlim(16,100)+
   scale_color_lancet()+
-  labs(title = NULL, y = NULL, x = "Points") + facet_wrap(~country, ncol = 3)
+  labs(title = "Distribution of Points Totals Per Season", y = NULL, x = "Points") + facet_wrap(~country, ncol = 3)
 
 facet_pts
 
@@ -454,7 +455,7 @@ TOTAL_ASD$League <- c("Premier League","La Liga", "Bundesliga")
 TOTAL_ASD <- TOTAL_ASD %>%
   select('League', '10/11', '11/12', '12/13', '13/14', '14/15',
          '15/16', '16/17', '17/18', '18/19')
-
+TOTAL_ASD
 
 TOTAL_CV <- rbind(engCV, espCV, gerCV)
 TOTAL_CV <- as_tibble(TOTAL_CV)
@@ -480,11 +481,17 @@ N <- TOTAL_ASD %>%
 
 asd_plot <- ggplot(data=N, aes(x=Season, y=as.numeric(ASD), group=League, color=League)) +
   geom_line(size = 1, alpha = 1)+
-  geom_point(size=4, alpha = 1)+xlab("Year")+ylab("ASD")+
+  geom_point(size=4, alpha = 1)+
   scale_color_lancet()+
-  theme(legend.box.spacing = unit(0.005, "cm"), legend.key.size = unit(0.7, "cm"))+
-  labs(color = NULL)
+  theme(legend.title = element_blank(),
+        plot.title = element_text(face = "plain"),
+        legend.position = "bottom",
+        legend.box.spacing = unit(0.005, "cm"),
+        legend.key.size = unit(0.7, "cm"))+
+  labs(title = "Competitive Balance of the Big 3 Per Season", y = "ASD", x = NULL, color = NULL)
 asd_plot
+
+
 
 N2 <- TOTAL_CV %>% 
   gather('10/11', '11/12', '12/13', '13/14', '14/15',

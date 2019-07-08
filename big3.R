@@ -10,46 +10,55 @@ library(gganimate)
 big3 <- read_csv("~/Documents/FTW/big3.csv")
 big3$year <- as.factor(big3$year)
 
+goals_league <- big3 %>%
+  group_by(country, year, games) %>%
+  summarise(goals = sum(gf)) %>%
+  mutate(goals_pg = goals/games)
+
+goals_league
+
 #Performance stats
 
-xg_all <- ggplot(big3)+
-  geom_density(aes(xg, fill = country), alpha=0.6)+
-  theme_ipsum(base_size = 18, axis_title_size = 18)+
-  xlim(0,120)+
-  labs(y = "", x = "xG")+
-  scale_fill_viridis_d(name=NULL,
-                      labels=c("Bundesliga", "Premier League", "La Liga"))
-xg_all
-
-pts_all <- ggplot(big3)+
-  geom_density(aes(pts, fill = country), alpha=0.6)+
-  theme_ipsum(base_size = 18, axis_title_size = 18)+
-  labs(y = "", x = "Points")+
-  xlim(0,120)+
-  scale_fill_calc(name=NULL,
-                      labels=c("Bundesliga", "Premier League", "La Liga"))
-pts_all
-
-gf_all <- ggplot(data = big3)+
-  geom_density(aes(x = gf, fill = country), alpha=0.5)+
-  theme_ipsum(base_size = 18, axis_title_size = 18)+
-  labs(y = "", x = "Goals Scored")+
-  xlim(0,150)+
-  scale_fill_viridis_d(name=NULL,
-                    labels=c("Bundesliga", "Premier League", "La Liga"))
+gf_all <- ggplot(goals_league, aes(year, goals_pg, fill = country))+
+  geom_col(position = "dodge", width = .8, alpha=0.8)+
+  theme(plot.title = element_text(face = "plain"), 
+        legend.position = "bottom", 
+        legend.box.spacing = unit(0.005, "cm"),
+        legend.key.size = unit(0.7, "cm"))+
+  labs(title = "Average Goals Per Game", fill = NULL, y = NULL, x = NULL)+
+  scale_x_discrete(labels=c("14/15", "15/16", "16/17", "17/18", "18/19"))+
+  scale_fill_lancet()
 gf_all
 
 
-ga_all <- ggplot(data = big3)+
-  geom_density(aes(x = ga, fill = country), alpha=0.5)+
-  theme_ipsum(base_size = 18, axis_title_size = 18)+
-  labs(y = "", x = "Goals Conceded")+
-  xlim(0,100)+
-  scale_fill_viridis_d(name=NULL,
-                      labels=c("Bundesliga", "Premier League", "La Liga"))
-ga_all
 
-ggarrange(xg_all, pts_all, gf_all, ga_all, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
+ 
+xg_all <- ggplot(big3)+
+   geom_density(aes(xg, color = country), alpha=0.6)+
+   theme(legend.position = "bottom", 
+         legend.box.spacing = unit(0.005, "cm"),
+         legend.key.size = unit(0.7, "cm"))+
+   xlim(0,120)+
+   labs(y = "", x = "xG")+
+   scale_color_lancet(name=NULL,
+                      labels=c("Bundesliga", "Premier League", "La Liga"))
+xg_all
+ 
+pts_all <- ggplot(data = big3)+
+  geom_density(aes(x = pts, color = country), alpha=0.5)+
+  theme(legend.position = "bottom", 
+        legend.box.spacing = unit(0.005, "cm"),
+        legend.key.size = unit(0.7, "cm"))+
+  labs(y = "", x = "Points")+
+  xlim(0,150)+
+  scale_color_lancet(name=NULL,
+                     labels=c("Bundesliga", "Premier League", "La Liga"))
+pts_all
+
+
+ggarrange(xg_all, pts_all, gf_all, ncol=3, common.legend = TRUE, legend="bottom")
+
+
 
 #Spending stats
 
@@ -142,6 +151,9 @@ esp_spend
 
 ggarrange(eng_spend, de_spend, esp_spend, nrow = 1, ncol = 3, common.legend = TRUE, legend="bottom", align = "hv")
 
+
+
+
 #Value
 
 eng_value <- ggplot(england, aes(value, fill = year))+
@@ -178,24 +190,3 @@ esp_value <- ggplot(spain, aes(value, fill = year))+
 esp_value
 
 ggarrange(eng_value, de_value, esp_value, nrow = 1, ncol = 3, common.legend = TRUE, legend="bottom", align = "hv")
-
-
-# Facets
-
-facet_pts <- ggplot(big3, aes(pts, fill = year))+
-  geom_density(alpha=0.5)+
-  theme_ipsum(plot_title_face = "plain", 
-              plot_title_size = 20, 
-              base_size = 18, 
-              axis_title_size = 20,
-              strip_text_size = 20)+
-  theme(legend.title = element_blank(),
-        legend.position = "bottom",
-        legend.box.spacing = unit(0.005, "cm"),
-        legend.key.size = unit(0.7, "cm"))+
-  xlim(16,100)+
-  coord_cartesian(xlim = c(19,99.5))+
-  labs(title = NULL, y = NULL, x = "Points")+
-  scale_fill_viridis_d(labels = c("14/15", "15/16", "16/17", "17/18", "18/19")) + 
-  facet_wrap(~country, nrow = 3)
-facet_pts
