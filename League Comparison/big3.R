@@ -21,8 +21,8 @@ goals_league
 
 gf_all <- ggplot(goals_league, aes(year, goals_pg, fill = country))+
   geom_col(position = "dodge", width = .8, alpha=0.8)+
-  theme(plot.title = element_text(face = "plain"), 
-        legend.position = "bottom", 
+  theme(plot.title = element_text(face = "plain"),
+        legend.position = "bottom",
         legend.box.spacing = unit(0.005, "cm"),
         legend.key.size = unit(0.7, "cm"))+
   labs(title = "Average Goals Per Game", fill = NULL, y = NULL, x = NULL)+
@@ -32,10 +32,10 @@ gf_all
 
 
 
- 
+
 xg_all <- ggplot(big3)+
    geom_density(aes(xg, color = country), alpha=0.6)+
-   theme(legend.position = "bottom", 
+   theme(legend.position = "bottom",
          legend.box.spacing = unit(0.005, "cm"),
          legend.key.size = unit(0.7, "cm"))+
    xlim(0,120)+
@@ -43,10 +43,10 @@ xg_all <- ggplot(big3)+
    scale_color_lancet(name=NULL,
                       labels=c("Bundesliga", "Premier League", "La Liga"))
 xg_all
- 
+
 pts_all <- ggplot(data = big3)+
   geom_density(aes(x = pts, color = country), alpha=0.5)+
-  theme(legend.position = "bottom", 
+  theme(legend.position = "bottom",
         legend.box.spacing = unit(0.005, "cm"),
         legend.key.size = unit(0.7, "cm"))+
   labs(y = "", x = "Points")+
@@ -101,14 +101,14 @@ eng_goals <- ggplot(england, aes(gf, fill = year))+
 eng_goals
 
 
-  
-  
+
+
 
 
 eng_goals <- ggplot(england, aes(gf, xg, fill = year, frame = year)) +
   geom_point() +
-  geom_smooth(aes(), 
-              method = "lm", 
+  geom_smooth(aes(),
+              method = "lm",
               show.legend = FALSE) +
   facet_wrap(~country, scales = "free")
 

@@ -25,9 +25,9 @@ germany$year <- as.factor(germany$year)
 #Testing distributions
 
 ggdensity(germany$pts)
-ggdensity(germany$net.spend) 
+ggdensity(germany$net.spend)
 ggdensity(germany$spend)
-ggdensity(germany$value) 
+ggdensity(germany$value)
 ggdensity(germany$absences)
 ggdensity(germany$xg)
 ggdensity(germany$gf)

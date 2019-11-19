@@ -11,14 +11,14 @@ library(RcppArmadillo)
 library(WRS)
 
 ## Data ----------
-    
+
 refs <- read_csv("~/Documents/refs.csv")
 performance <- read_csv("~/Documents/refs2.csv")
 
 ## Wrangling ----------
 
 refs %>%
-  group_by(Team) %>% 
+  group_by(Team) %>%
   summarise(position = round(mean(Position, digits = 0)),
             corrections_diff = sum(`Corrections Difference`),
             points = sum(`Points`),
@@ -50,7 +50,7 @@ true_totals %>%
   mutate(percentage = round((card_points/true_card_points)*100, digits = 2)) -> cards
 
 performance %>%
-  group_by(Referee) %>% 
+  group_by(Referee) %>%
   summarise(Games = sum(Games),
             Incidents = sum(Incidents),
             Corrections = sum(Corrections)) %>%
@@ -123,13 +123,13 @@ theme <-theme(axis.title = element_text(size = 20),
 
 ggplot(true_totals, aes(reorder(Team, corrections_diff),
                         corrections_diff,
-                        label=corrections_diff)) + 
+                        label=corrections_diff)) +
   geom_point(aes(color = corrections_diff > 0), stat='identity', size=13.5)  +
   geom_text(color="white", size=6.5) +
   scale_color_manual(name=NULL,
                      labels = c("Negative", "Positive"),
                      values = c("#C75D56", "#247593")) +
-  labs(title="Which Team Lost the Most Goals as a Result of Referee Bias?", 
+  labs(title="Which Team Lost the Most Goals as a Result of Referee Bias?",
        subtitle="Net Corrections Per Bundesliga Team 07/08 - 18/19",
        caption = "Source: Wahre Tabelle",
        y = NULL, x = NULL) +
@@ -138,7 +138,7 @@ ggplot(true_totals, aes(reorder(Team, corrections_diff),
 # Ridge plot
 
 theme <-theme(axis.title = element_text(size = 20),
-              axis.text = element_text(size = 15), 
+              axis.text = element_text(size = 15),
               panel.grid.minor.y = element_blank(),
               panel.grid.major.y = element_blank(),
               legend.position = "bottom",
@@ -148,25 +148,25 @@ theme <-theme(axis.title = element_text(size = 20),
               plot.subtitle = element_text(size = 20, color = "darkslategrey", margin = margin(b = 25)),
               plot.caption = element_text(size = 15, margin = margin(t = 10), color = "grey70", hjust = 0))
 
-refs %>% 
+refs %>%
   group_by(Team) %>%
   filter(sum(Points) > 300) %>%
   ungroup(all) %>%
   ggplot(aes(y=reorder(Team, Points), x=`Corrections Difference`)) +
   geom_density_ridges(alpha=0.9, size = 0.7, fill = "#C75D56", scale = 1.6) +
-  labs(title="The Distribution of Net Corrections Per Team", 
+  labs(title="The Distribution of Net Corrections Per Team",
        subtitle="Density Plots of Net Corrected Goals Per Bundesliga Team 07/08 - 18/19",
        caption = "Source: Wahre Tabelle",
        y = NULL) +
   theme
 
-performance %>% 
+performance %>%
   group_by(Referee) %>%
   filter(sum(Games) > 100) %>%
   ungroup(all) %>%
   ggplot(aes(y=reorder(Referee, Games), x= Proportion)) +
   geom_density_ridges(alpha=0.9, size = 0.7, fill = "#247593", scale = 1.6) +
-  labs(title="The Proportion of Errors Per Referee", 
+  labs(title="The Proportion of Errors Per Referee",
        subtitle="Density Plots of Each Referee's Proportion of Errors Per Season 07/08 - 18/19",
        caption = "Source: Wahre Tabelle",
        y = NULL) +
@@ -175,7 +175,7 @@ performance %>%
 # Violin/Box plot
 
 home_away_refs <- select(refs, Team, Season, `Home Points Difference`,
-                         `Away Points Difference`) 
+                         `Away Points Difference`)
 home_away_refs <- rename(home_away_refs,
                          Home = `Home Points Difference`,
                          Away = `Away Points Difference`)
@@ -183,7 +183,7 @@ home_away_refs <- gather(home_away_refs, `Home`, `Away`,
                 key = "Home/Away", value = "Difference")
 
 theme <-theme(axis.title = element_text(size = 20),
-              axis.text = element_text(size = 15), 
+              axis.text = element_text(size = 15),
               panel.grid.minor.x = element_blank(),
               panel.grid.major.x = element_blank(),
               legend.position = "bottom",

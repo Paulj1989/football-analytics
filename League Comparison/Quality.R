@@ -15,8 +15,8 @@ ucl %>%
   geom_point(size=4, alpha = 1) +
   labs(title = "Champions League Performance", x = NULL, y = NULL, color = NULL)+
   scale_color_lancet()+
-  theme(plot.title = element_text(face = "plain"), 
-        legend.position="bottom", 
+  theme(plot.title = element_text(face = "plain"),
+        legend.position="bottom",
         axis.text.x = element_text(angle=45, size = 18))
 
 #Top4
@@ -28,7 +28,7 @@ top4_plot <- top4 %>%
   ggplot(aes(Year, Average, group = League, color = League)) +
   geom_line(size = 0.8) +
   labs(title = "Top 4 Mean Average Revenue", subtitle = "Rankings from Deloitte's Football Money League",
-       x = NULL, y = 'Revenue (€m)', color = NULL) + 
+       x = NULL, y = 'Revenue (€m)', color = NULL) +
   scale_color_lancet()+
   theme(plot.title = element_text(face="plain"),
         plot.subtitle = element_text(size = 18),
@@ -48,7 +48,7 @@ rich_plot <- rich_list %>%
   geom_line(size = 0.8) +
   labs(title = "Total Revenue of Football's Richest Teams",
        subtitle = " Including all teams ranked in the Money League",
-       color = NULL, x = NULL, y = 'Revenue (€m)') + 
+       color = NULL, x = NULL, y = 'Revenue (€m)') +
   scale_color_lancet()+
   theme(plot.title = element_text(face="plain"),
         plot.subtitle = element_text(size = 18),

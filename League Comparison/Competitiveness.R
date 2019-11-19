@@ -11,7 +11,7 @@ library(ggsci)
 time3 <- read_csv("~/Documents/GitHub Directory/ftw/time3.csv")
 time3$year <- as.factor(time3$year)
 
-time <- time3 %>% 
+time <- time3 %>%
   filter(year == '14/15' | year == '15/16' | year == '16/17' | year == '17/18' | year == '18/19')
 
 #Plot distributions
@@ -37,7 +37,7 @@ germany <- filter(time3, country == "Bundesliga")
 england <- filter(time3, country == "Premier League")
 spain <- filter(time3, country == "La Liga")
 
-#Gini 
+#Gini
 
 
 (sum(ineq(eng_2019$pts), ineq(eng_2018$pts), ineq(eng_2017$pts),
@@ -91,7 +91,7 @@ HHIub20 <- HHIub20/1140
 HHIub18 <- 2*(2*18-1)
 HHIub18 <- HHIub18/918
 
-#Germany 
+#Germany
 
 
 #England
@@ -475,7 +475,7 @@ TOTAL_CV <- TOTAL_CV %>%
 
 #PLOT
 ggthemr('greyscale', layout = "scientific", text_size = 25)
-N <- TOTAL_ASD %>% 
+N <- TOTAL_ASD %>%
   gather('10/11', '11/12', '12/13', '13/14', '14/15',
          '15/16', '16/17', '17/18', '18/19', key = "Season", value = "ASD")
 
@@ -493,7 +493,7 @@ asd_plot
 
 
 
-N2 <- TOTAL_CV %>% 
+N2 <- TOTAL_CV %>%
   gather('10/11', '11/12', '12/13', '13/14', '14/15',
          '15/16', '16/17', '17/18', '18/19', key = "Season", value = "CV")
 

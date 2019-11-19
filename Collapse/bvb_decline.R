@@ -103,7 +103,7 @@ distance_paired <- t.test(hinrunde$Distance, ruckrunde$Distance, paired = TRUE, 
 
 paco_paired <- t.test(hinrunde$Paco_xG_Mins, ruckrunde$Paco_xG_Mins, paired = TRUE, alternative = "two.sided")
 
-# Plots ----------  
+# Plots ----------
 
 ggthemr('greyscale', layout = "scientific", text_size = 25)
 
@@ -122,8 +122,8 @@ points2 <- points %>%
 ggplot(points2, aes(Game, points_total, color = Team, linetype = type)) +
   geom_line(size = 1, alpha = 0.8) +
   scale_x_continuous(breaks=seq(2,34,2))+
-  labs(title = "Cumulative Points Totals 18/19", 
-         subtitle = "Simulated vs Actual Points Totals for BVB & Bayern", 
+  labs(title = "Cumulative Points Totals 18/19",
+         subtitle = "Simulated vs Actual Points Totals for BVB & Bayern",
          x = "Match", y = "Points", linetype = NULL, color = NULL) +
   scale_color_lancet(labels = c("Bayern Munich","Borussia Dortmund")) +
   scale_linetype_discrete(labels = c("Actual","Simulated")) +
@@ -138,14 +138,14 @@ ggplot(points2, aes(Game, points_total, color = Team, linetype = type)) +
 # xG
 season2 <- season %>%
     gather(xG, xGA, key = xG_Type, value = xG_Total)
-  
+
 ggplot(season2, aes(Game, xG_Total, fill = xG_Type)) +
   geom_col(position = "dodge", color = "black") +
   scale_fill_lancet() +
   scale_x_continuous(breaks=seq(1,34,1))+
-  labs(title = "Borussia Dortmund Performance 18/19", 
-       subtitle = "Expected Goals For & Against Per Match ", 
-       x = "Match", y = "xG/xGA", 
+  labs(title = "Borussia Dortmund Performance 18/19",
+       subtitle = "Expected Goals For & Against Per Match ",
+       x = "Match", y = "xG/xGA",
        fill = NULL) +
   theme(legend.position="bottom")
 
@@ -154,9 +154,9 @@ ggplot(season2, aes(Game, xG_Total, color = xG_Type)) +
   stat_smooth(se = FALSE) +
   scale_x_continuous(breaks=seq(1,34,1))+
   scale_color_lancet() +
-  labs(title = "Borussia Dortmund Performance 18/19", 
-       subtitle = "Expected Goals For & Against Per Match ", 
-       x = "Match", y = "xG/xGA", 
+  labs(title = "Borussia Dortmund Performance 18/19",
+       subtitle = "Expected Goals For & Against Per Match ",
+       x = "Match", y = "xG/xGA",
        color = NULL) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(size = 18, angle = 45),
@@ -173,9 +173,9 @@ ggplot(bayernxg2, aes(Game, xG_Total, color = xG_Type)) +
   stat_smooth(se = FALSE) +
   scale_color_lancet() +
   scale_x_continuous(breaks=seq(1,34,1))+
-  labs(title = "Bayern Munich Performance 18/19", 
-       subtitle = "Expected Goals For & Against Per Match ", 
-       x = "Match", y = "xG/xGA", 
+  labs(title = "Bayern Munich Performance 18/19",
+       subtitle = "Expected Goals For & Against Per Match ",
+       x = "Match", y = "xG/xGA",
        color = NULL) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(size = 18, angle = 45),
@@ -194,8 +194,8 @@ ggplot(season3, aes(Game, Paco_Total, color = Paco_Type), size = 1) +
   geom_smooth(se = FALSE) +
   scale_x_continuous(breaks = seq(2, 34, 2)) +
   scale_y_continuous(breaks = seq(1, 6, 1)) +
-  labs(title = "Paco Alcacer's Performance 18/19", 
-       subtitle = "Goals, xG & Shots", 
+  labs(title = "Paco Alcacer's Performance 18/19",
+       subtitle = "Goals, xG & Shots",
        x = "Match", y = "Totals", linetype = NULL, color = NULL) +
   scale_color_lancet(labels = c("Goals", "Shots", "xG")) +
   theme(legend.title = element_blank(),
@@ -204,16 +204,16 @@ ggplot(season3, aes(Game, Paco_Total, color = Paco_Type), size = 1) +
         legend.position = "bottom",
         legend.box.spacing = unit(0.2, "cm"),
         legend.key.size = unit(0.8, "cm"))
-  
+
 #Absences
 
 ggplot(season, aes(Game, Absence)) +
   geom_col(color = "black", alpha = 0.6) +
   geom_smooth(se = FALSE, color = "#ED0000FF") +
   scale_x_continuous(breaks = seq(1, 34, 1)) +
-  labs(title = "Borussia Dortmund Absences 18/19", 
-       subtitle = "Absences Ranked 1 - 4 Based on Player Importance", 
-       x = "Match", y = "Absences", 
+  labs(title = "Borussia Dortmund Absences 18/19",
+       subtitle = "Absences Ranked 1 - 4 Based on Player Importance",
+       x = "Match", y = "Absences",
        fill = NULL) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(size = 18, angle = 45),
@@ -229,23 +229,23 @@ ggplot(season, aes(Game, Distance)) +
   geom_point(size = 2.5) +
   geom_smooth(se = FALSE, color = "#ED0000FF") +
   scale_x_continuous(breaks = seq(1, 34, 1)) +
-  labs(title = "Borussia Dortmund Distance Covered 18/19", 
-       subtitle = "Total Distance Covered Per Game", 
-       x = "Match", y = "Distance (km)", 
+  labs(title = "Borussia Dortmund Distance Covered 18/19",
+       subtitle = "Total Distance Covered Per Game",
+       x = "Match", y = "Distance (km)",
        fill = NULL) +
   theme(axis.text.x = element_text(size = 18, angle = 45),
         plot.title = element_text(face = "plain"))
 
-  
+
 # Errors
 
 ggplot(season, aes(x=Game, y=Errors)) +
   geom_col(color = "black", alpha = 0.6) +
   geom_smooth(se = FALSE, color = "#ED0000FF") +
   scale_x_continuous(breaks = seq(1, 34, 1)) +
-  labs(title = "Borussia Dortmund Errors 18/19", 
-       subtitle = "The Total Number of Errors Committed Per Match", 
-       x = "Match", y = "Errors", 
+  labs(title = "Borussia Dortmund Errors 18/19",
+       subtitle = "The Total Number of Errors Committed Per Match",
+       x = "Match", y = "Errors",
        fill = NULL) +
   theme(axis.text.x = element_text(size = 18, angle = 45),
         plot.title = element_text(face = "plain"))

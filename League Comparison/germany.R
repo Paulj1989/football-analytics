@@ -62,7 +62,7 @@ print(fit)
 
 fitxg <- dixoncoles_ext(hgoal ~ off(home) + def(away) + hfa + hxg + 0,
                       vgoal ~ off(away) + def(home) + vxg,
-                      weights = 1, 
+                      weights = 1,
                       data = buli)
 
 
@@ -84,11 +84,11 @@ to_predict
 
 #Predicted probabilities
 
-preds<- fit %>% 
-  augment(newdata = germany, type = "outcomes") %>% 
+preds<- fit %>%
+  augment(newdata = germany, type = "outcomes") %>%
   unnest() %>%
-  mutate(prob = scales::percent(prob, 2)) %>%  
-  spread(outcome, prob) %>% 
+  mutate(prob = scales::percent(prob, 2)) %>%
+  spread(outcome, prob) %>%
   select(home, visitor, home_win, draw, away_win, FT)
 
 preds

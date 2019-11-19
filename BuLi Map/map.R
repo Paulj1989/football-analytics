@@ -16,11 +16,11 @@ germany_data <- as_tibble(map_data(germany))
 ggthemr('greyscale', layout = "scientific", text_size = 25)
 
 ggplot(germany_data, aes(long, lat, group = group)) +
-  geom_polygon(color = "white") + theme(axis.line = element_blank(), 
+  geom_polygon(color = "white") + theme(axis.line = element_blank(),
                                         axis.ticks = element_blank(),
-                                        panel.grid = element_blank(), 
+                                        panel.grid = element_blank(),
                                         axis.title = element_blank(),
                                         axis.text = element_blank(),
                                         legend.position = "right")
 
-        
+

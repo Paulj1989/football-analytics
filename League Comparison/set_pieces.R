@@ -13,7 +13,7 @@ bvb_set_pieces <- read_csv("~/Documents/FTW/bvb_set_pieces.csv")
 # Subset & Average ----------
 
 set_pieces %>%
-  group_by(Name) %>% 
+  group_by(Name) %>%
   summarise(fk_shots = sum(`FK Shots`),
             fk_goals = sum(`FK Goals`)) %>%
   mutate(avg_fk_conversion = round((fk_goals/fk_shots)*100, digits = 1)) %>%
@@ -21,7 +21,7 @@ set_pieces %>%
   arrange(desc(avg_fk_conversion)) -> fk_avg
 
 set_pieces %>%
-  group_by(Name) %>% 
+  group_by(Name) %>%
   summarise(pen_shots = sum(`Pen Shots`),
             pen_goals = sum(`Pen Goals`)) %>%
   mutate(avg_pen_conversion = round((pen_goals/pen_shots)*100, digits = 1)) %>%
@@ -54,10 +54,10 @@ fk_avg %>%
   geom_col(color = "black", alpha = 0.9, fill = "#B9373B") +
   geom_text(position = position_dodge(0.9),
             hjust = 1.4, color = "white", size = 6) +
-  labs(title = "The Highest Scoring Free Kick Takers in Football", 
-       subtitle = "Most Free Kicks Scored in the Big Five Leagues from 15/16 - 18/19", 
+  labs(title = "The Highest Scoring Free Kick Takers in Football",
+       subtitle = "Most Free Kicks Scored in the Big Five Leagues from 15/16 - 18/19",
        caption = "Source: Sofa Score",
-       x = NULL, y = NULL, 
+       x = NULL, y = NULL,
        fill = NULL) +
   theme + coord_flip()
 
@@ -67,10 +67,10 @@ fk_avg %>%
   geom_col(color = "black", alpha = 0.9, fill = "#AA305D") +
   geom_text(position = position_dodge(0.9),
             hjust = 1.2, color = "white", size = 6, aes(label = paste(avg_fk_conversion, "%", sep = ""))) +
-  labs(title = "The Most Efficient Free Kick Takers in Football", 
-       subtitle = "Highest Conversion Rates in the Big Five Leagues from 15/16 - 18/19", 
+  labs(title = "The Most Efficient Free Kick Takers in Football",
+       subtitle = "Highest Conversion Rates in the Big Five Leagues from 15/16 - 18/19",
        caption = "Source: Sofa Score",
-       x = NULL, y = NULL, 
+       x = NULL, y = NULL,
        fill = NULL) +
   theme + coord_flip()
 
@@ -80,10 +80,10 @@ fk_avg %>%
   geom_col(color = "black", alpha = 0.9, fill = "#04545A") +
   geom_text(position = position_dodge(0.9),
             hjust = 1.4, color = "white", size = 6) +
-  labs(title = "The Highest Number of Free Kicks Taken in Football", 
-       subtitle = "Most Free Kick Shots in the Big Five Leagues from 15/16 - 18/19", 
+  labs(title = "The Highest Number of Free Kicks Taken in Football",
+       subtitle = "Most Free Kick Shots in the Big Five Leagues from 15/16 - 18/19",
        caption = "Source: Sofa Score",
-       x = NULL, y = NULL, 
+       x = NULL, y = NULL,
        fill = NULL) +
   theme + coord_flip()
 
@@ -96,10 +96,10 @@ pen_avg %>%
   geom_col(color = "black", alpha = 0.9, fill = "#2D2548") +
   geom_text(position = position_dodge(0.9),
             hjust = 1.3, color = "white", size = 6) +
-  labs(title = "The Highest Scoring Penalty Takers in Football", 
-       subtitle = "Most Penalties Scored in the Big Five Leagues from 15/16 - 18/19", 
+  labs(title = "The Highest Scoring Penalty Takers in Football",
+       subtitle = "Most Penalties Scored in the Big Five Leagues from 15/16 - 18/19",
        caption = "Source: Sofa Score",
-       x = NULL, y = NULL, 
+       x = NULL, y = NULL,
        fill = NULL) +
   theme + coord_flip()
 
@@ -110,10 +110,10 @@ pen_avg %>%
   geom_text(position = position_dodge(0.9),
             hjust = 1.2, color = "white",
             size = 6, aes(label = paste(avg_pen_conversion, "%", sep = ""))) +
-  labs(title = "The Most Efficient Penalty Takers in Football", 
-       subtitle = "Highest Conversion Rates in the Big Five Leagues from 15/16 - 18/19", 
+  labs(title = "The Most Efficient Penalty Takers in Football",
+       subtitle = "Highest Conversion Rates in the Big Five Leagues from 15/16 - 18/19",
        caption = "Source: Sofa Score",
-       x = NULL, y = NULL, 
+       x = NULL, y = NULL,
        fill = NULL) +
   theme + coord_flip()
 
@@ -123,9 +123,9 @@ pen_avg %>%
   geom_col(color = "black", alpha = 1, fill = "#53A16B") +
   geom_text(position = position_dodge(0.9),
             hjust = 1.4, color = "white", size = 6) +
-  labs(title = "The Most Penalties Taken in Football", 
-       subtitle = "Most Penalties Taken in the Big Five Leagues from 15/16 - 18/19", 
+  labs(title = "The Most Penalties Taken in Football",
+       subtitle = "Most Penalties Taken in the Big Five Leagues from 15/16 - 18/19",
        caption = "Source: Sofa Score",
-       x = NULL, y = NULL, 
+       x = NULL, y = NULL,
        fill = NULL) +
   theme + coord_flip()
