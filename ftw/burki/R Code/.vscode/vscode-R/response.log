@@ -1,0 +1,14 @@
+{"time":"2020-06-03 18:31:16","pid":10674,"command":"attach","tempdir":"/tmp/Rtmp3ex6Al"} 
+{"time":"2020-06-03 18:33:13","pid":10674,"command":"attach","tempdir":"/tmp/Rtmp3ex6Al"} 
+{"time":"2020-06-03 18:33:16","pid":10674,"command":"attach","tempdir":"/tmp/Rtmp3ex6Al"} 
+{"time":"2020-06-03 18:34:54","pid":21257,"command":"attach","tempdir":"/tmp/RtmpaXcePx"} 
+{"time":"2020-06-03 18:47:37","pid":27136,"command":"attach","tempdir":"/tmp/Rtmp9hpnO6"} 
+{"time":"2020-06-03 18:53:49","pid":14973,"command":"attach","tempdir":"/tmp/RtmpzsdPYo"} 
+{"time":"2020-06-03 19:00:16","pid":14973,"command":"dataview","source":"table","type":"json","title":"total_comp","file":"/tmp/RtmpzsdPYo/file3a7d24cd1284.json"} 
+{"time":"2020-06-03 19:02:52","pid":14973,"command":"dataview","source":"table","type":"json","title":"total_comp","file":"/tmp/RtmpzsdPYo/file3a7d1697b0a8.json"} 
+{"time":"2020-06-03 19:07:11","pid":14973,"command":"dataview","source":"table","type":"json","title":"\"img.png\"","file":"/tmp/RtmpzsdPYo/file3a7d3c837766.json"} 
+{"time":"2020-06-03 22:23:38","pid":29066,"command":"attach","tempdir":"/tmp/Rtmp5PjsA0"} 
+{"time":"2020-06-03 22:23:56","pid":29066,"command":"dataview","source":"table","type":"json","title":"burki","file":"/tmp/Rtmp5PjsA0/file718a16054a08.json"} 
+{"time":"2020-06-03 22:24:28","pid":29066,"command":"dataview","source":"table","type":"json","title":"total_comp","file":"/tmp/Rtmp5PjsA0/file718a2b81bc54.json"} 
+{"time":"2020-06-03 22:25:56","pid":29066,"command":"attach","tempdir":"/tmp/Rtmp5PjsA0"} 
+{"time":"2020-06-03 22:25:58","pid":29066,"command":"attach","tempdir":"/tmp/Rtmp5PjsA0"} 
