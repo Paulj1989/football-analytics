@@ -41,9 +41,7 @@ comp_tab <-
   comp %>%
   select(-team) %>%
   group_by(full_name) %>%
-  gt(rowname_col = "team")
-
-comp_tab %>%
+  gt(rowname_col = "team") %>%
   tab_header(
     title = "Scouting Borussia Dortmund's Next Goalkeeper",
     subtitle = "Comparing Potential Goalkeeper Replacements with Roman Bürki"
@@ -143,8 +141,10 @@ comp_tab %>%
                "Koen Casteels", "Martin Dúbravka",
                "Predrag Rajković")) %>%
   fmt_percent(columns = c(6, 8, 11), decimals=1, scale_values = TRUE) %>%
-  fmt_number(columns = c(5, 7, 9, 10), decimals = 2) %>%
+  fmt_number(columns = c(4, 5, 7, 9, 10), decimals = 2) %>%
   tab_options(row_group.font.weight = "bold") %>%
   opt_table_font(
     font = list(
       google_font(name = "Montserrat")))
+
+gtsave(comp_tab, here::here("sports", "goalkeeper-analysis", "figures", "table.png"), expand = 12, vwidth = 1600, vheight = 900)
