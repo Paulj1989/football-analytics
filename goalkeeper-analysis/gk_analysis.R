@@ -26,7 +26,7 @@ big5 <- df %>%
     progressive_passes = sum(progressive_passes), progressive_distance = sum(progressive_distance),
     .groups = "keep"
   ) %>%
-  filter(mins > 4000) %>%
+  filter(mins > 6000) %>%
   select(
     full_name, surname, league, mins, nineties, sota, sota90, goals_against, ga90,
     psxg, psxg_sot, psxg_plus_minus, psxg90, psxg_percent, pass_att90, launch_att90,
@@ -67,7 +67,7 @@ big5 %>%
     plot.title = element_text(size = 20, family = "Montserrat"),
     plot.subtitle = element_text(size = 16, family = "Montserrat", color = "grey40"),
     plot.caption = element_text(size = 12, color = "grey60"),
-    axis.text.y = element_text(size = 10),
+    axis.text.y = element_text(size = 12),
     axis.text.x = element_text(size = 14),
     axis.title = element_blank(),
     panel.grid.major.x = element_line(color = "grey90", size = 0.5),
@@ -75,7 +75,7 @@ big5 %>%
     panel.grid.major.y = element_blank()
   )
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "psxg.png"), dpi = 320, width = 12, height = 16)
+ggsave(here::here("sports", "goalkeeper-analysis", "figures", "psxg.png"), dpi = 320, width = 14, height = 16)
 
 # league psxg %
 df %>%
@@ -384,7 +384,7 @@ season %>%
     y = reorder(full_name, psxg_percent),
     yend = reorder(full_name, psxg_percent),
     color = comp_color
-  ), size = 6, alpha = 0.8) +
+  ), size = 5, alpha = 0.8) +
   geom_vline(xintercept = 0, color = "grey20", size = 1) +
   scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1)) +
   scale_y_discrete(labels = c("Roman Bürki" = expression(bold("Roman Bürki")), parse = TRUE)) +
@@ -409,7 +409,7 @@ season %>%
     panel.grid.major.y = element_blank()
   )
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "psxg2021.png"), dpi = 320, width = 16, height = 9)
+ggsave(here::here("sports", "goalkeeper-analysis", "figures", "psxg2021.png"), dpi = 320, width = 14, height = 16)
 
 # shot-stopping & workload
 ggplot(

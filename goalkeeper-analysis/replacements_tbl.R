@@ -6,7 +6,7 @@
 ##%######################################################%##
 
 # packages
-pacman::p_load(tidyverse, ggrepel)
+pacman::p_load(tidyverse, gt)
 
 # data
 df <- read_csv(here::here("sports", "goalkeeper-analysis", "big_five.csv"))
