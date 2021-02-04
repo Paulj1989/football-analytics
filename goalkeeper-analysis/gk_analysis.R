@@ -205,9 +205,9 @@ ggplot(big5, aes(x = opa90, y = opa_avg_dist, color = league)) +
     point.padding = 0.3, segment.alpha = 0, color = "grey20") +
   labs(
     title = glue::glue("Sweeper Keeper's Defensive Actions in the Big Five Leagues"),
-    subtitle = glue::glue("Defensive Actions Outside the Penalty Area Per 90 (OPA/90) & Average Distance from Box (Average Distance OPA)
+    subtitle = glue::glue("Defensive Actions Outside the Penalty Area Per 90 (#OPA/90) & Average Distance from Box (Average Distance OPA)
                           2017/18 - 2020/21 | Minimum 6000 Mins"),
-    x = "OPA/90",
+    x = "#OPA/90",
     y = "Average Distance OPA",
     caption = "Data: FBref | StatsBomb") +
   scale_x_continuous(
