@@ -30,7 +30,9 @@ comp <- df %>%
   ) %>%
   filter(full_name %in% c("Walter Benitez", "Koen Casteels",
                           "Roman Bürki", "Martin Dúbravka",
-                          "Predrag Rajković", "Alphonse Areola")) %>%
+                          "Predrag Rajković", "Alphonse Areola",
+                          "Bartłomiej Drągowski"
+                          )) %>%
   select(
     full_name, team, mins, ga90, psxg_plus_minus90, psxg_percent,
     progressive_distance90,launch_comp_percent, opa90, opa_avg_dist,
@@ -64,9 +66,13 @@ comp_tab <-
                locations = cells_column_labels(
                  columns = vars(psxg_plus_minus90)
                )) %>%
-  tab_footnote(footnote = "Total Progressive Passing Yards Per 90",
+  tab_footnote(footnote = "Progressive Passing Yards Per 90",
                locations = cells_column_labels(
                  columns = vars(progressive_distance90)
+               )) %>%
+  tab_footnote(footnote = "Defensive Actions Outside the Penalty Area Per 90",
+               locations = cells_column_labels(
+                 columns = vars(opa90)
                )) %>%
   cols_label(
     mins = html("Mins"),
@@ -75,7 +81,7 @@ comp_tab <-
     psxg_percent = html("PSxG %"),
     progressive_distance90 = html("Progressive Distance/90"),
     launch_comp_percent = html("Long-Pass Completion %"),
-    opa90 = html("OPA/90"),
+    opa90 = html("#OPA/90"),
     opa_avg_dist = html("Average Distance OPA"),
     cross_stopped_percent = html("Crosses Stopped %")) %>%
   tab_style(
@@ -139,7 +145,7 @@ comp_tab <-
   row_group_order(
     groups = c("Roman Bürki", "Alphonse Areola",
                "Koen Casteels", "Martin Dúbravka",
-               "Predrag Rajković")) %>%
+               "Bartłomiej Drągowski", "Predrag Rajković")) %>%
   fmt_percent(columns = c(6, 8, 11), decimals=1, scale_values = TRUE) %>%
   fmt_number(columns = c(4, 5, 7, 9, 10), decimals = 2) %>%
   tab_options(row_group.font.weight = "bold") %>%
