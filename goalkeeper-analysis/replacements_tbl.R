@@ -20,7 +20,7 @@ comp <- df %>%
     mins = sum(mins),
     ga90 = sum(goals_against)/nineties,
     psxg_plus_minus90 = sum(psxg_plus_minus)/nineties,
-    psxg_percent = (sum(psxg)/sum(goals_against)) - 1,
+    psxg_percent = (sum(psxg)/sum(goals_against-own_goals)) - 1,
     cross_stopped_percent = sum(crosses_stopped)/sum(crosses_faced),
     opa_avg_dist = mean(opa_avg_dist),
     opa90 = sum(opa)/nineties,
@@ -31,12 +31,13 @@ comp <- df %>%
   filter(full_name %in% c("Walter Benitez", "Koen Casteels",
                           "Roman Bürki", "Martin Dúbravka",
                           "Predrag Rajković", "Alphonse Areola",
-                          "Bartłomiej Drągowski"
+                          "Bartłomiej Drągowski", "Mike Maignan",
+                          "Walter Benítez"
                           )) %>%
   select(
-    full_name, team, mins, ga90, psxg_plus_minus90, psxg_percent,
-    progressive_distance90,launch_comp_percent, opa90, opa_avg_dist,
-    cross_stopped_percent
+    full_name, team, mins, ga90, psxg_plus_minus90,
+    psxg_percent, opa90, opa_avg_dist, cross_stopped_percent,
+    progressive_distance90, launch_comp_percent
   )
 
 comp_tab <-
@@ -55,13 +56,13 @@ comp_tab <-
     label = "Shot-Stopping",
     columns = vars(ga90, psxg_plus_minus90, psxg_percent)) %>%
   tab_spanner(
+    label = "Shot-Prevention",
+    columns = vars(opa90, opa_avg_dist,
+                   cross_stopped_percent)) %>%
+  tab_spanner(
     label = "Distribution",
     columns = vars(progressive_distance90,
                    launch_comp_percent)) %>%
-  tab_spanner(
-    label = "Interception",
-    columns = vars(opa90, opa_avg_dist,
-                   cross_stopped_percent)) %>%
   tab_footnote(footnote = "Post-Shot Expected Goals +/- Per 90",
                locations = cells_column_labels(
                  columns = vars(psxg_plus_minus90)
@@ -104,14 +105,14 @@ comp_tab <-
       cell_text(color = "white")),
     locations = cells_body(
       columns = vars(psxg_percent),
-      rows = psxg_percent < -0.052)) %>%
+      rows = psxg_percent < -0.033)) %>%
   tab_style(
     style = list(
       cell_fill(color = "#1a936f", alpha = 0.8),
       cell_text(color = "white")),
     locations = cells_body(
       columns = vars(psxg_percent),
-      rows = psxg_percent > -0.052)) %>%
+      rows = psxg_percent > -0.033)) %>%
   tab_style(
     style = list(
       cell_fill(color = "#e01e37", alpha = 0.8),
@@ -144,10 +145,11 @@ comp_tab <-
       rows = full_name == "Roman Bürki")) %>%
   row_group_order(
     groups = c("Roman Bürki", "Alphonse Areola",
-               "Koen Casteels", "Martin Dúbravka",
-               "Bartłomiej Drągowski", "Predrag Rajković")) %>%
-  fmt_percent(columns = c(6, 8, 11), decimals=1, scale_values = TRUE) %>%
-  fmt_number(columns = c(4, 5, 7, 9, 10), decimals = 2) %>%
+               "Walter Benítez", "Koen Casteels",
+               "Martin Dúbravka", "Bartłomiej Drągowski",
+               "Mike Maignan", "Predrag Rajković")) %>%
+  fmt_percent(columns = c(6, 9, 11), decimals=1, scale_values = TRUE) %>%
+  fmt_number(columns = c(4, 5, 7, 8, 10), decimals = 2) %>%
   tab_options(row_group.font.weight = "bold") %>%
   opt_table_font(
     font = list(
