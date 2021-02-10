@@ -10,6 +10,7 @@ pacman::p_load(tidyverse, ggrepel)
 # data
 df <- read_csv(here::here("sports", "goalkeeper-analysis", "big_five.csv"))
 
+
 # wrangling
 big5 <- df %>%
   group_by(full_name, surname, league) %>%
@@ -34,6 +35,7 @@ big5 <- df %>%
     opa_avg_dist = mean(opa_avg_dist),
     opa90 = opa / nineties,
     pass_att90 = sum(pass_att) / nineties,
+    pass_completion = sum(passes_completed)/sum(passes_attempted),
     launched = sum(launched),
     launch_att = sum(launch_att),
     launch_att90 = launch_att / nineties,
@@ -45,9 +47,9 @@ big5 <- df %>%
   filter(mins > 6000) %>%
   select(
     full_name, surname, league, mins, nineties, sota, sota90, goals_against, own_goals,
-    ga90, psxg, psxg_sot, psxg_plus_minus, psxg90, psxg_percent, pass_att90, launch_att90,
-    launch_comp_percent, crosses_faced, crosses_stopped, cross_stopped_percent, opa,
-    opa_avg_dist, opa90, progressive_passes, progressive_distance
+    ga90, psxg, psxg_sot, psxg_plus_minus, psxg90, psxg_percent, pass_att90, pass_completion,
+    launch_att90, launch_comp_percent, crosses_faced, crosses_stopped, cross_stopped_percent,
+    opa, opa_avg_dist, opa90, progressive_passes, progressive_distance
   )
 
 ## %######################################################%##
@@ -227,10 +229,6 @@ ggplot(big5, aes(x = opa90, y = opa_avg_dist, color = league)) +
     x = "#OPA/90",
     y = "Average Distance OPA",
     caption = "Data: FBref | StatsBomb") +
-  scale_x_continuous(
-    labels = seq(0.5, 1.5, 0.5),
-    breaks = seq(0.5, 1.5, 0.5),
-    limits = c(0.23, 1.5)) +
   scale_y_continuous(
     labels = seq(12, 18, 1),
     breaks = seq(12, 18, 1),
@@ -304,9 +302,9 @@ ggplot(big5, aes(x = launch_att90, y = pass_att90, color = league)) +
     point.padding = 0.3, segment.alpha = 0, color = "grey20"
   ) +
   labs(
-    title = glue::glue("Goalkeeper Passing & Distribution in the Big Five Leagues"),
+    title = glue::glue("Goalkeeper Distribution in the Big Five Leagues"),
     subtitle = glue::glue("Passes Longer than 40 Feet Attempted Per 90 (Long Passes/90) & Passes Attempted Per 90 (Passes/90)
-                          2017/18 - 2020/21 | Minimum 4500 Minutes Played"),
+                          2017/18 - 2020/21 | Minimum 6000 Mins"),
     x = "Long Passes/90",
     y = "Passes/90",
     caption = "Data: FBref | StatsBomb") +
@@ -315,7 +313,7 @@ ggplot(big5, aes(x = launch_att90, y = pass_att90, color = league)) +
   theme(
     plot.margin = margin(1, 1, 1, 1, unit = "cm"),
     legend.title = element_blank(),
-    legend.position = c(0.95, 0.15),
+    legend.position = c(0.99, 0.92),
     legend.direction = "vertical",
     legend.spacing = unit(1, "mm"),
     legend.background = element_blank(),
@@ -403,11 +401,11 @@ season %>%
     color = comp_color
   ), size = 5, alpha = 0.8) +
   geom_vline(xintercept = 0, color = "grey20", size = 1) +
-  scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1), breaks = seq(-0.3, 1, 0.1), limits = c(-0.3, 1)) +
+  scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1), breaks = seq(-0.3, 0.5, 0.1), limits = c(-0.3, 0.53)) +
   scale_y_discrete(labels = c("Roman Bürki" = expression(bold("Roman Bürki")), parse = TRUE)) +
   labs(
     title = glue::glue("Goalkeeper Shot-Stopping Over/Underperformance in the Big Five Leagues"),
-    subtitle = glue::glue("Post-Shot Expected Goals as % of Goals (PSxG %)\n2020/21 | Minimum 1350 Mins"),
+    subtitle = glue::glue("Post-Shot Expected Goals as % of Goals (PSxG %)\n2020/21 | Minimum 1400 Mins"),
     caption = "Data: FB Ref | StatsBomb"
   ) +
   theme_minimal(base_family = "Fira Code", base_size = 14) +
@@ -447,7 +445,7 @@ ggplot(
   labs(
     title = glue::glue("Goalkeeper Shot-Stopping Performance & Workload in the Big Five Leagues"),
     subtitle = glue::glue("Post-Shot Expected Goals as % of Goals (PSxG %) & Shots on Target Against Per 90 (SoTA/90)
-                          2020/21 | Minimum 1350 Mins"),
+                          2020/21 | Minimum 1400 Mins"),
     x = "PSxG %",
     y = "SoTA/90",
     caption = "Data: FBref | StatsBomb") +
@@ -468,7 +466,7 @@ ggplot(
            label = "Busy & Overperforming",
            family = "Fira Code") +
   scale_color_manual(values = c("#457b9d", "#e63946", "#B34B7D", "#4D8C60", "#F7BC4D")) +
-  scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1), breaks = seq(-0.3, 0.4, 0.1), limits = c(-0.3, 0.4)) +
+  scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1), breaks = seq(-0.3, 0.5, 0.1), limits = c(-0.3, 0.53)) +
   theme_minimal(base_family = "Fira Code", base_size = 18) +
   theme(
     plot.margin = margin(1, 1, 1, 1, unit = "cm"),
