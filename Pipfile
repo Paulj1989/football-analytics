@@ -12,6 +12,7 @@ ipykernel = "*"
 pandas-profiling = "*"
 ipywidgets = "*"
 ipympl = "*"
+bleach = ">=3.3.0"
 
 [dev-packages]
 black = "*"
