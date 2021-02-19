@@ -22,6 +22,10 @@ As some of this is being done retroactively, the repository isn't exhaustive, an
 
 <img src="bvb-xg/goals_for_against.png" width="1200">
 
+- [Twitter thread discussing team offensive performances across Europe's big five leagues](https://twitter.com/paul_johnson89/status/1346872980094263298?s=20)
+
+<img src="bvb-xg/npxg.png" width="1200">
+
 ## License
 
 All code contained in the repository is licensed under the [MIT license](LICENSE).
