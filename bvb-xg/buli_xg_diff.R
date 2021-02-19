@@ -1,6 +1,6 @@
-pacman::p_load(tidyverse, ggbump, ggrepel, here, ggtext, glue)
+pacman::p_load(tidyverse, ggbump, ggrepel, ggtext, glue)
 
-df <- readr::read_csv("buli_xg.csv")
+df <- read_csv(here::here("bvb-xg", "buli_xg.csv"))
 
 df <- df %>%
   mutate(xg_diff = xg - xg_against,
@@ -25,15 +25,15 @@ xg_totals <- df %>%
       team == "Bayern Munich" ~ "#ef233c",
       team == "RB Leipzig" ~ "#0466c8",
       team == "M'Gladbach" ~ "#212529",
-      TRUE ~ "#DEE2E6"
+      TRUE ~ "grey90"
     )
   )
 
 team_totals <- df %>%
   group_by(team) %>%
   summarize(
-    total_xg_plus_minus = sum(xg_plus_minus),
-    rounds = 81
+    total_xg_plus_minus = round(sum(xg_plus_minus), digits = 2),
+    rounds = 88
   ) %>%
   mutate(
     line_colour = case_when(
@@ -41,14 +41,14 @@ team_totals <- df %>%
       team == "Bayern Munich" ~ "#ef233c",
       team == "RB Leipzig" ~ "#0466c8",
       team == "M'Gladbach" ~ "#212529",
-      TRUE ~ "#DEE2E6"
+      TRUE ~ "grey90"
     )
   )
 
 ggplot() +
   # Plot not highlighted players
   geom_bump(
-    data = subset(xg_totals, line_colour == "#DEE2E6"),
+    data = subset(xg_totals, line_colour == "grey90"),
     aes(
       x = total_rounds, y = cumsum_xg_plus_minus, group = team,
       colour = line_colour
@@ -56,7 +56,7 @@ ggplot() +
   ) +
   # plot highlighted players
   geom_bump(
-    data = subset(xg_totals, line_colour != "#DEE2E6"),
+    data = subset(xg_totals, line_colour != "grey90"),
     aes(
       x = total_rounds, y = cumsum_xg_plus_minus, group = team,
       colour = line_colour
@@ -73,7 +73,7 @@ ggplot() +
     box.padding = 1.5, point.padding = 1,
     min.segment.length = Inf,
     force = 1,
-    size = 3.5, family = "IBM Plex Sans"
+    size = 3.5, family = "Montserrat"
   ) +
   geom_vline(xintercept = 34, linetype = "dashed", color = "grey80") +
   geom_vline(xintercept = 68, linetype = "dashed", color = "grey80") +
@@ -83,11 +83,11 @@ ggplot() +
                size = 0.7, arrow = arrow(length = unit(0.6, "cm"))
   ) +
   # title and caption
-  annotate("text", x = 2, y = 50, label = "Team xG Over/Underperformance in the Bundesliga", hjust = 0, family = "IBM Plex Sans Bold", size = 6) +
-  annotate("text", x = 2, y = 47, label = "Cumulative Sum of Team xGDiff +/- (Goal Difference - xG Difference) in the Bundesliga since 2018",
-           hjust = 0, family = "IBM Plex Sans Bold", color = "grey20", size = 3.75
+  annotate("text", x = 2, y = 50, label = "Team xG Over/Underperformance in the Bundesliga", hjust = 0, family = "Montserrat", size = 7) +
+  annotate("text", x = 2, y = 46.5, label = "Cumulative Sum of Team xGDiff +/- (Goal Difference - xG Difference) in the Bundesliga since 2018",
+           hjust = 0, family = "Montserrat", color = "grey40", size = 4
   ) +
-  annotate("text", x = 2, y = 44.5, label = "Source: FB Ref/StatsBomb", hjust = 0, family = "IBM Plex Sans", color = "grey40", size = 2.5) +
+  annotate("text", x = 2, y = 44, label = "Source: FB Ref/StatsBomb", hjust = 0, family = "Montserrat", color = "grey40", size = 3) +
   scale_y_continuous(breaks = seq(-30, 40, 10), labels = seq(-30, 40, 10), "xGDiff +/- \n") +
   scale_x_continuous(expand = expansion(add = c(0.05, 15)), position = "top", breaks = c(17, 51, 80), labels = c("18/19", "19/20", "20/21")) +
   scale_size_continuous(range = c(1, 7)) +
@@ -106,5 +106,7 @@ ggplot() +
     panel.grid.minor.x = element_blank(),
     panel.grid.major.y = element_line(color="#F8F9FA"),
     panel.grid.minor.y = element_blank()
-  ) + ggsave(here::here("rankings.png"), dpi = 320, width = 12, height = 8)
+  )
+
+ggsave(here::here("bvb-xg", "updated_rankings.png"), dpi = 320, width = 16, height = 9)
 
