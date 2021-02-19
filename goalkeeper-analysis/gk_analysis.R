@@ -8,7 +8,7 @@
 pacman::p_load(tidyverse, ggrepel)
 
 # data
-df <- read_csv(here::here("sports", "goalkeeper-analysis", "big_five.csv"))
+df <- read_csv(here::here("goalkeeper-analysis", "big_five.csv"))
 
 
 # wrangling
@@ -21,6 +21,8 @@ big5 <- df %>%
     goals_against = sum(goals_against),
     own_goals = sum(own_goals),
     ga90 = goals_against / nineties,
+    set_piece_goals = sum(goals_ck)+sum(goals_fk),
+    sp_goal_percent = set_piece_goals/sum(goals_against),
     sota = sum(sota),
     sota90 = sota / nineties,
     psxg = sum(psxg),
@@ -84,7 +86,7 @@ big5 %>%
     legend.position = "none",
     plot.title = element_text(size = 20, family = "Montserrat"),
     plot.subtitle = element_text(size = 16, family = "Montserrat", color = "grey40"),
-    plot.caption = element_text(size = 12, color = "grey60"),
+    plot.caption = element_text(size = 12, family = "Montserrat", color = "grey60"),
     axis.text.y = element_text(size = 12),
     axis.text.x = element_text(size = 14),
     axis.title = element_blank(),
@@ -93,7 +95,57 @@ big5 %>%
     panel.grid.major.y = element_blank()
   )
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "psxg.png"), dpi = 320, width = 14, height = 16)
+ggsave(here::here("goalkeeper-analysis", "figures", "psxg.png"), dpi = 320, width = 14, height = 16)
+
+# top teams psxg %
+df %>%
+  group_by(full_name, team) %>%
+  na.omit() %>%
+  summarize(
+    mins = sum(mins),
+    goals_against = sum(goals_against),
+    psxg = sum(psxg),
+    psxg_percent = (psxg / goals_against) - 1,
+    .groups = "keep"
+  ) %>%
+  filter(team %in% c("Bayern Munich", "Dortmund", "RB Leipzig", "M'Gladbach",
+                     "Manchester City", "Manchester United", "Chelsea", "Arsenal",
+                     "Tottenham", "PSG", "Real Madrid", "Barcelona", "Atlético Madrid",
+                     "Juventus", "Inter Milan")
+         & mins > 3500) %>%
+  select(full_name, psxg_percent) %>%
+  mutate(comp_color = ifelse(psxg_percent > 0, "type1", "type2")) %>%
+  ggplot(aes(y = reorder(full_name, psxg_percent), x = psxg_percent, label = scales::percent(psxg_percent))) +
+  geom_segment(aes(
+    x = 0, xend = psxg_percent,
+    y = reorder(full_name, psxg_percent),
+    yend = reorder(full_name, psxg_percent),
+    color = comp_color
+  ), size = 14, alpha = 0.8) +
+  geom_vline(xintercept = 0, color = "grey20", size = 1) +
+  scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1)) +
+  scale_y_discrete(labels = c("Roman Bürki" = expression(bold("Roman Bürki")), parse = TRUE)) +
+  labs(
+    title = glue::glue("Goalkeeper Shot-Stopping Over/Underperformance Among Europe's Biggest Teams"),
+    subtitle = glue::glue("Post-Shot Expected Goals as % of Goals (PSxG %)
+                          2017/18 - 2020/21 | Minimum 3500 Mins"),
+    caption = "Data: FB Ref/StatsBomb | Graphic: @paul_johnson89") +
+  theme_minimal(base_family = "Fira Code", base_size = 14) +
+  scale_color_manual(values = c("#457b9d", "#e63946")) +
+  theme(
+    plot.margin = margin(1, 1, 1, 1, unit = "cm"),
+    legend.position = "none",
+    plot.title = element_text(size = 22, family = "Montserrat"),
+    plot.subtitle = element_text(size = 16, family = "Montserrat", color = "grey40"),
+    plot.caption = element_text(size = 12, family = "Montserrat", color = "grey60"),
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 14),
+    axis.title = element_blank(),
+    panel.grid.major.x = element_line(color = "grey90", size = 0.8),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_blank())
+
+ggsave(here::here("goalkeeper-analysis", "figures", "europe_psxg.png"), dpi = 320, width = 16, height = 9)
 
 # league psxg %
 df %>%
@@ -106,7 +158,7 @@ df %>%
     psxg_percent = (psxg / goals_against) - 1,
     .groups = "keep"
   ) %>%
-  filter(mins > 3000 & league == "Premier League") %>%
+  filter(mins > 4500 & league == "Bundesliga") %>%
   select(full_name, psxg_percent) %>%
   mutate(comp_color = ifelse(psxg_percent > 0, "type1", "type2")) %>%
   ggplot(aes(y = reorder(full_name, psxg_percent), x = psxg_percent, label = scales::percent(psxg_percent))) +
@@ -115,14 +167,15 @@ df %>%
     y = reorder(full_name, psxg_percent),
     yend = reorder(full_name, psxg_percent),
     color = comp_color
-  ), size = 6, alpha = 0.8) +
+  ), size = 12, alpha = 0.8) +
   geom_vline(xintercept = 0, color = "grey20", size = 1) +
   scale_x_continuous(labels = function(x) scales::percent(x, accuracy = 1)) +
+  scale_y_discrete(labels = c("Roman Bürki" = expression(bold("Roman Bürki")), parse = TRUE)) +
   labs(
-    title = glue::glue("Goalkeeper Shot-Stopping Over/Underperformance in the Premier League"),
+    title = glue::glue("Goalkeeper Shot-Stopping Over/Underperformance in the Bundesliga"),
     subtitle = glue::glue("Post-Shot Expected Goals as % of Goals (PSxG %)
-                          2017/18 - 2020/21 | Minimum 3000 Mins"),
-    caption = "Data: FB Ref | StatsBomb") +
+                          2017/18 - 2020/21 | Minimum 4500 Mins"),
+    caption = "Data: FB Ref/StatsBomb | Graphic: @paul_johnson89") +
   theme_minimal(base_family = "Fira Code", base_size = 14) +
   scale_color_manual(values = c("#457b9d", "#e63946")) +
   theme(
@@ -130,13 +183,15 @@ df %>%
     legend.position = "none",
     plot.title = element_text(size = 22, family = "Montserrat"),
     plot.subtitle = element_text(size = 16, family = "Montserrat", color = "grey40"),
-    plot.caption = element_text(size = 12, color = "grey60"),
+    plot.caption = element_text(size = 12, family = "Montserrat", color = "grey60"),
     axis.text.y = element_text(size = 12),
     axis.text.x = element_text(size = 14),
     axis.title = element_blank(),
     panel.grid.major.x = element_line(color = "grey90", size = 0.8),
     panel.grid.minor.x = element_blank(),
     panel.grid.major.y = element_blank())
+
+ggsave(here::here("goalkeeper-analysis", "figures", "buli_psxg.png"), dpi = 320, width = 16, height = 9)
 
 # shot-stopping & workload
 ggplot(big5, aes(x = psxg_percent, y = sota90, color = league,
@@ -159,7 +214,7 @@ ggplot(big5, aes(x = psxg_percent, y = sota90, color = league,
                           2017/18 - 2020/21 | Minimum 6000 Mins"),
     x = "PSxG %",
     y = "SoTA/90",
-    caption = "Data: FBref | StatsBomb") +
+    caption = "Data: FBref/StatsBomb | Graphic: @paul_johnson89") +
   annotate("text",
            x = -0.13, y = 5.5, hjust = 0, size = 4,
            label = "Busy & Underperforming",
@@ -196,13 +251,13 @@ ggplot(big5, aes(x = psxg_percent, y = sota90, color = league,
     legend.box.background = element_rect(colour = "black"),
     plot.title = element_text(size = 22, family = "Montserrat"),
     plot.subtitle = element_text(size = 16, family = "Montserrat", color = "grey30"),
-    plot.caption = element_text(size = 14, color = "#a8a8a8"),
+    plot.caption = element_text(size = 14, family = "Montserrat", color = "#a8a8a8"),
     axis.text = element_text(size = 14),
     axis.title = element_text(size = 16),
     panel.grid.major = element_line(color = "#F3F5F6", size = 0.4),
     panel.grid.minor = element_blank())
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "gk_workload.png"), dpi = 320, width = 16, height = 9)
+ggsave(here::here("goalkeeper-analysis", "figures", "gk_workload.png"), dpi = 320, width = 16, height = 9)
 
 ## %######################################################%##
 #                                                          #
@@ -228,7 +283,7 @@ ggplot(big5, aes(x = opa90, y = opa_avg_dist, color = league)) +
                           2017/18 - 2020/21 | Minimum 6000 Mins"),
     x = "#OPA/90",
     y = "Average Distance OPA",
-    caption = "Data: FBref | StatsBomb") +
+    caption = "Data: FBref/StatsBomb | Graphic: @paul_johnson89") +
   scale_y_continuous(
     labels = seq(12, 18, 1),
     breaks = seq(12, 18, 1),
@@ -253,7 +308,7 @@ ggplot(big5, aes(x = opa90, y = opa_avg_dist, color = league)) +
     panel.grid.major = element_line(color = "#F3F5F6", size = 0.4),
     panel.grid.minor = element_blank())
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "sweepers.png"), dpi = 320, width = 16, height = 9)
+ggsave(here::here("goalkeeper-analysis", "figures", "sweepers.png"), dpi = 320, width = 16, height = 9)
 
 # long ball completion %
 big5 %>%
@@ -284,8 +339,7 @@ big5 %>%
     panel.grid.minor.x = element_line(color = "#F3F5F7", size = 0.5),
     panel.grid.major.y = element_blank())
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "pass_completion.png"), dpi = 320, width = 12, height = 16)
-
+ggsave(here::here("goalkeeper-analysis", "figures", "pass_completion.png"), dpi = 320, width = 12, height = 16)
 
 # passing & distribution
 ggplot(big5, aes(x = launch_att90, y = pass_att90, color = league)) +
@@ -307,7 +361,7 @@ ggplot(big5, aes(x = launch_att90, y = pass_att90, color = league)) +
                           2017/18 - 2020/21 | Minimum 6000 Mins"),
     x = "Long Passes/90",
     y = "Passes/90",
-    caption = "Data: FBref | StatsBomb") +
+    caption = "Data: FBref/StatsBomb | Graphic: @paul_johnson89") +
   scale_color_manual(values = c("#457b9d", "#e63946", "#B34B7D", "#4D8C60", "#F7BC4D")) +
   theme_minimal(base_family = "Fira Code", base_size = 18) +
   theme(
@@ -328,7 +382,7 @@ ggplot(big5, aes(x = launch_att90, y = pass_att90, color = league)) +
     panel.grid.major = element_line(color = "#F3F5F6", size = 0.4),
     panel.grid.minor = element_blank())
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "distribution.png"), dpi = 320, width = 16, height = 9)
+ggsave(here::here("goalkeeper-analysis", "figures", "distribution.png"), dpi = 320, width = 16, height = 9)
 
 # crosses stopped
 big5 %>%
@@ -360,7 +414,7 @@ big5 %>%
     panel.grid.minor.x = element_line(color = "#F3F5F7", size = 0.5),
     panel.grid.major.y = element_blank())
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "crosses.png"), dpi = 320, width = 12, height = 16)
+ggsave(here::here("goalkeeper-analysis", "figures", "crosses.png"), dpi = 320, width = 12, height = 16)
 
 ## %######################################################%##
 #                                                          #
@@ -424,7 +478,7 @@ season %>%
     panel.grid.major.y = element_blank()
   )
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "psxg2021.png"), dpi = 320, width = 14, height = 16)
+ggsave(here::here("goalkeeper-analysis", "figures", "psxg2021.png"), dpi = 320, width = 14, height = 16)
 
 # shot-stopping & workload
 ggplot(
@@ -448,7 +502,7 @@ ggplot(
                           2020/21 | Minimum 1400 Mins"),
     x = "PSxG %",
     y = "SoTA/90",
-    caption = "Data: FBref | StatsBomb") +
+    caption = "Data: FBref/StatsBomb | Graphic: @paul_johnson89") +
   annotate("text",
            x = -0.28, y = 6.2, hjust = 0, size = 5,
            label = "Busy & Underperforming",
@@ -486,4 +540,4 @@ ggplot(
     panel.grid.major = element_line(color = "#F3F5F6", size = 0.4),
     panel.grid.minor = element_blank())
 
-ggsave(here::here("sports", "goalkeeper-analysis", "figures", "workload2021.png"), dpi = 320, width = 16, height = 9)
+ggsave(here::here("goalkeeper-analysis", "figures", "workload2021.png"), dpi = 320, width = 16, height = 9)
