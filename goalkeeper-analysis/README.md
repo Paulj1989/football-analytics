@@ -12,4 +12,4 @@ The gk_analysis.R script contains all the code for the visualizations in the fir
 
 ### Distribution
 
-<img src="figures/distribution.png" width="750">
+<img src="figures/distribution.png" width="1200">
