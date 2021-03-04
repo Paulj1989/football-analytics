@@ -14,7 +14,10 @@ As some of this is being done retroactively, the repository isn't exhaustive, an
 
 ### [Analyzing Jadon Sancho's Season So Far](sancho)
 
-<img src="sancho/sancho.png" width="1200">
+- [Twitter thread discussing Jadon Sancho's Performances in the Bundesliga](https://twitter.com/paul_johnson89/status/1367160195118477316)
+
+<img src="sancho/buli_npga90.png" width="1200">
+
 
 ### [BVB's xG Trends](bvb-xg)
 
@@ -25,6 +28,16 @@ As some of this is being done retroactively, the repository isn't exhaustive, an
 - [Twitter thread discussing team offensive performances across Europe's big five leagues](https://twitter.com/paul_johnson89/status/1346872980094263298?s=20)
 
 <img src="bvb-xg/npxg.png" width="1200">
+
+### [Southampton's Struggles in the EPL](epl)
+
+- [Twitter thread discussing Southampton's issues](https://twitter.com/paul_johnson89/status/1366144249096523776)
+
+<img src="epl/epl_rankings.png" width="1200">
+
+### [Age Distribution in European Football](age)
+
+<img src="age/buli_epl_age.png" width="1200">
 
 ## License
 
