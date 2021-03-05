@@ -12,6 +12,16 @@ league_age <-
   age_data %>% 
   count(league, age)
 
+age_data %>%
+  group_by(league) %>%
+  summarize(mean_age = mean(age))
+
+facet_labels <- as_labeller(c("Bundesliga" = "Bundesliga\n\nMean = 25.5",
+                              "La Liga" = "La Liga\n\nMean = 26.6",
+                              "Ligue 1" = "Ligue 1\n\nMean = 25.1",
+                              "Premier League" = "Premier League\n\nMean = 26.3",
+                              "Serie A" = "Serie A\n\nMean = 26.7"))
+
 # Comparing the Big Five Leagues
 league_age %>%
   ggplot(aes(x = age, y = n, fill = league)) +
@@ -41,7 +51,7 @@ league_age %>%
     panel.grid.minor.y = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank()) +
-  facet_wrap(~league, ncol = 5)
+  facet_wrap(~league, ncol = 5, labeller = facet_labels)
 
 ggsave(here::here("age", "big_five_age.png"),
        dpi = 320, width = 16, height = 9)
