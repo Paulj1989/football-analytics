@@ -66,7 +66,7 @@ saints %>%
   annotate("text", x = 6, y = 0.3, label = "Source: FB Ref/StatsBomb | Graphic: @paul_johnson89",
            hjust = 0, family = "Montserrat", color = "grey50", size = 4) +
   scale_y_continuous(breaks = seq(0, 2, 1), labels = seq(0, 2, 1), limits = c(0, 2.45), NULL) +
-  scale_x_continuous(position = "top", limits = c(6, 139), breaks = c(19, 57, 95, 126), labels = c("17/18" ,"18/19", "19/20", "20/21")) +
+  scale_x_continuous(position = "top", limits = c(6, 143), breaks = c(19, 57, 95, 129), labels = c("17/18" ,"18/19", "19/20", "20/21")) +
   scale_colour_manual(values = c("#0466c8", "#ef233c")) +
   coord_cartesian(clip = "off") +
   theme_minimal(base_family = "Fira Code", base_size = 18) +
@@ -122,7 +122,7 @@ saints %>%
   annotate("text", x = 6, y = 2.85, label = "Source: FB Ref/StatsBomb | Graphic: @paul_johnson89",
            hjust = 0, family = "Montserrat", color = "grey50", size = 4) +
   scale_y_continuous(breaks = seq(0, 3, 1), labels = seq(0, 3, 1), limits = c(0, 3.3), NULL) +
-  scale_x_continuous(position = "top", limits = c(6, 139), breaks = c(19, 57, 95, 126), labels = c("17/18" ,"18/19", "19/20", "20/21")) +
+  scale_x_continuous(position = "top", limits = c(6, 143), breaks = c(19, 57, 95, 129), labels = c("17/18" ,"18/19", "19/20", "20/21")) +
   scale_colour_manual(values = c("#0466c8", "#ef233c")) +
   coord_cartesian(clip = "off") +
   theme_minimal(base_family = "Fira Code", base_size = 18) +
@@ -226,10 +226,6 @@ totals <- df %>%
   mutate(
     line_colour = case_when(
       team == "Southampton" ~ "#EF233C",
-      team == "Everton" ~ "#0466C8",
-      team == "Tottenham" ~ "#EDA600",
-      team == "Manchester City" ~ "#78B0DE",
-      team == "Liverpool" ~ "#00B2A9",
       TRUE ~ "grey60"
     )
   )
@@ -242,10 +238,6 @@ team_totals <- totals %>%
   mutate(
     line_colour = case_when(
       team == "Southampton" ~ "#EF233C",
-      team == "Everton" ~ "#0466C8",
-      team == "Tottenham" ~ "#EDA600",
-      team == "Manchester City" ~ "#78B0DE",
-      team == "Liverpool" ~ "#00B2A9",
       TRUE ~ "grey60"
     )
   ) %>%
@@ -298,7 +290,7 @@ ggplot() +
            hjust = 0, family = "Montserrat", color = "grey40", size = 4) +
   scale_y_continuous(breaks = seq(-100, 250, 50), labels = seq(-100, 250, 50), NULL) +
   scale_x_continuous(expand = expansion(add = c(0.05, 18)), position = "top",
-                     limits = c(1, 145), breaks = c(19, 57, 95, 126),
+                     limits = c(1, 145), breaks = c(19, 57, 95, 129),
                      labels = c("17/18" ,"18/19", "19/20", "20/21")) +
   scale_size_continuous(range = c(1, 7)) +
   scale_colour_identity() +
@@ -367,7 +359,7 @@ ggplot() +
            hjust = 0, family = "Montserrat", color = "grey40", size = 3.5) +
   scale_y_continuous(breaks = seq(-60, 40, 20), labels = seq(-60, 40, 20), limits = c(-40, 55), NULL) +
   scale_x_continuous(expand = expansion(add = c(0.05, 18)), position = "top",
-                     limits = c(1, 145), breaks = c(19, 57, 95, 126),
+                     limits = c(1, 145), breaks = c(19, 57, 95, 129),
                      labels = c("17/18" ,"18/19", "19/20", "20/21")) +
   scale_size_continuous(range = c(1, 7)) +
   scale_colour_identity() +
