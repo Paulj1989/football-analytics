@@ -4,7 +4,12 @@ Repository containing the code for previous football analytics visualizations an
 
 As some of this has been done retroactively, the repository isn't exhaustive, and a lot of the code could be done with being cleaned up (something I'll pretend that I will get to one day, but that will probably never happen). Nonetheless, many of the examples should be reproducible, and more recent examples should be cleaner, better organised, and better documented.
 
-## Examples
+## Ongoing Work
+
+- [Money in Football](https://github.com/paulj1989/money-in-football)
+- [Game States Analysis](https://github.com/paulj1989/game-state)
+
+## Previous Work
 
 ### [Goalkeeper Analysis](bvb/goalkeeper-analysis)
 
