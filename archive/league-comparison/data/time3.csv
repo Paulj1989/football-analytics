@@ -1,0 +1,523 @@
+team,year,country,pts,value
+FC Barcelona,18/19,La Liga,87,1180
+Atletico Madrid,18/19,La Liga,76,965.3
+Real Madrid,18/19,La Liga,68,955
+Valencia CF,18/19,La Liga,61,353
+Sevilla FC,18/19,La Liga,59,286
+Getafe CF,18/19,La Liga,59,243
+RCD Espanyol,18/19,La Liga,53,231.7
+Athletic Bilbao,18/19,La Liga,53,219.7
+Real Sociedad,18/19,La Liga,50,193.9
+Real Betis,18/19,La Liga,50,192.75
+Deportivo Alavés,18/19,La Liga,50,124.3
+SD Eibar,18/19,La Liga,47,107.2
+CD Leganés,18/19,La Liga,45,98.05
+Villarreal CF,18/19,La Liga,44,94.5
+Levante UD,18/19,La Liga,44,90
+Celta de Vigo,18/19,La Liga,41,87.7
+Real Valladolid CF,18/19,La Liga,41,83.8
+Girona FC,18/19,La Liga,37,71.3
+SD Huesca,18/19,La Liga,33,63.8
+Rayo Vallecano,18/19,La Liga,32,46.8
+Manchester City,18/19,Premier League,98,1140
+Liverpool FC,18/19,Premier League,97,974.25
+Chelsea FC,18/19,Premier League,72,976.75
+Tottenham Hotspur,18/19,Premier League,71,840
+Arsenal FC,18/19,Premier League,70,643
+Manchester United,18/19,Premier League,66,812.5
+Wolverhampton Wanderers,18/19,Premier League,57,250.5
+Everton FC,18/19,Premier League,54,421.75
+Leicester City,18/19,Premier League,52,347.75
+West Ham United,18/19,Premier League,52,336
+Watford FC,18/19,Premier League,50,183.4
+Crystal Palace,18/19,Premier League,49,236.2
+Newcastle United,18/19,Premier League,45,199
+AFC Bournemouth,18/19,Premier League,45,258.3
+Burnley FC,18/19,Premier League,40,177.25
+Southampton FC,18/19,Premier League,39,230.1
+Brighton & Hove Albion,18/19,Premier League,36,177.2
+Cardiff City,18/19,Premier League,34,97.15
+Fulham FC,18/19,Premier League,26,237
+Huddersfield Town,18/19,Premier League,16,125.95
+Bayern Munchen,18/19,Bundesliga,78,844.65
+Borussia Dortmund,18/19,Bundesliga,76,378.25
+RasenBallsport Leipzig,18/19,Bundesliga,66,298.65
+Bayer Leverkusen,18/19,Bundesliga,58,364.7
+Bor. Monchengladbach,18/19,Bundesliga,55,197.53
+VfL Wolfsburg,18/19,Bundesliga,55,140.3
+Eintracht Frankfurt,18/19,Bundesliga,54,126.75
+Werder Bremen,18/19,Bundesliga,53,111.4
+1899 Hoffenheim,18/19,Bundesliga,51,200.8
+Fortuna Düsseldorf,18/19,Bundesliga,44,35.5
+Hertha BSC,18/19,Bundesliga,43,119.25
+1. FSV Mainz 05,18/19,Bundesliga,43,84.48
+SC Freiburg,18/19,Bundesliga,36,83.13
+FC Schalke 04,18/19,Bundesliga,33,245.7
+FC Augsburg,18/19,Bundesliga,32,96.35
+VfB Stuttgart,18/19,Bundesliga,28,154.35
+Hannover 96,18/19,Bundesliga,21,80.7
+1. FC Nürnberg,18/19,Bundesliga,19,28.9
+Bayern Munchen,17/18,Bundesliga,84,603.4
+FC Schalke 04,17/18,Bundesliga,63,185.55
+1899 Hoffenheim,17/18,Bundesliga,55,120.13
+Borussia Dortmund,17/18,Bundesliga,55,406.48
+Bayer Leverkusen,17/18,Bundesliga,55,211.3
+RasenBallsport Leipzig,17/18,Bundesliga,53,181.08
+VfB Stuttgart,17/18,Bundesliga,51,58.65
+Eintracht Frankfurt,17/18,Bundesliga,49,73.6
+Bor. Monchengladbach,17/18,Bundesliga,47,152.45
+Hertha BSC,17/18,Bundesliga,43,90.45
+Werder Bremen,17/18,Bundesliga,42,68.5
+FC Augsburg,17/18,Bundesliga,41,62.13
+Hannover 96,17/18,Bundesliga,39,40.6
+1. FSV Mainz 05,17/18,Bundesliga,36,72.65
+SC Freiburg,17/18,Bundesliga,36,65.23
+VfL Wolfsburg,17/18,Bundesliga,33,134.85
+Hamburger SV,17/18,Bundesliga,31,71.75
+1. FC Köln,17/18,Bundesliga,22,106.15
+Manchester City,17/18,Premier League,100,616.35
+Manchester United,17/18,Premier League,81,645.1
+Tottenham Hotspur,17/18,Premier League,77,535.35
+Liverpool FC,17/18,Premier League,75,495
+Chelsea FC,17/18,Premier League,70,649.65
+Arsenal FC,17/18,Premier League,63,633.9
+Burnley FC,17/18,Premier League,54,96.85
+Everton FC,17/18,Premier League,49,346.75
+Leicester City,17/18,Premier League,47,252.1
+Newcastle United,17/18,Premier League,44,167.28
+Crystal Palace,17/18,Premier League,44,194.43
+AFC Bournemouth,17/18,Premier League,44,116.1
+West Ham United,17/18,Premier League,42,264.85
+Watford FC,17/18,Premier League,41,167.3
+Brighton & Hove Albion,17/18,Premier League,40,106.75
+Huddersfield Town,17/18,Premier League,37,64.4
+Southampton FC,17/18,Premier League,36,247.5
+Swansea City,17/18,Premier League,33,171.34
+Stoke City,17/18,Premier League,33,177.8
+West Bromwich Albion,17/18,Premier League,31,165.5
+FC Barcelona,17/18,La Liga,93,772.5
+Atlético Madrid,17/18,La Liga,79,585
+Real Madrid,17/18,La Liga,76,716.2
+Valencia CF,17/18,La Liga,73,230.9
+Villarreal CF,17/18,La Liga,61,196.7
+Real Betis,17/18,La Liga,60,96.55
+Sevilla FC,17/18,La Liga,58,269.45
+Getafe CF,17/18,La Liga,55,48.75
+SD Eibar,17/18,La Liga,51,71.75
+Girona FC,17/18,La Liga,51,35.6
+RCD Espanyol,17/18,La Liga,49,85.45
+Real Sociedad,17/18,La Liga,49,165.1
+Celta de Vigo,17/18,La Liga,49,114.65
+Deportivo Alavés,17/18,La Liga,47,64.85
+Levante UD,17/18,La Liga,46,59.35
+Athletic Bilbao,17/18,La Liga,43,188.5
+CD Leganés,17/18,La Liga,43,53.63
+Deportivo de La Coruña,17/18,La Liga,29,89.4
+UD Las Palmas,17/18,La Liga,22,123
+Málaga CF,17/18,La Liga,20,88.43
+Bayern Munchen,16/17,Bundesliga,82,582.15
+RasenBallsport Leipzig,16/17,Bundesliga,67,62.38
+Borussia Dortmund,16/17,Bundesliga,64,339.4
+1899 Hoffenheim,16/17,Bundesliga,62,90.18
+1. FC Köln,16/17,Bundesliga,49,73.85
+Hertha BSC,16/17,Bundesliga,49,76.48
+SC Freiburg,16/17,Bundesliga,48,44.6
+Werder Bremen,16/17,Bundesliga,45,63.6
+Bor. Monchengladbach,16/17,Bundesliga,45,165.6
+FC Schalke 04,16/17,Bundesliga,43,173.4
+Eintracht Frankfurt,16/17,Bundesliga,42,60.25
+Bayer Leverkusen,16/17,Bundesliga,41,250.8
+FC Augsburg,16/17,Bundesliga,38,58.5
+Hamburger SV,16/17,Bundesliga,38,75.4
+1. FSV Mainz 05,16/17,Bundesliga,37,77.45
+VfL Wolfsburg,16/17,Bundesliga,37,180.15
+FC Ingolstadt 04,16/17,Bundesliga,32,37
+SV Darmstadt 98,16/17,Bundesliga,25,21.75
+Chelsea FC,16/17,Premier League,93,603.3
+Tottenham Hotspur,16/17,Premier League,86,385.5
+Manchester City,16/17,Premier League,78,621.4
+Liverpool FC,16/17,Premier League,76,394.15
+Arsenal FC,16/17,Premier League,75,522.75
+Manchester United,16/17,Premier League,69,533.25
+Everton FC,16/17,Premier League,61,284.35
+Southampton FC,16/17,Premier League,46,214.25
+AFC Bournemouth,16/17,Premier League,46,103.5
+West Bromwich Albion,16/17,Premier League,45,115.1
+West Ham United,16/17,Premier League,45,240.78
+Leicester City,16/17,Premier League,44,175
+Stoke City,16/17,Premier League,44,193.25
+Crystal Palace,16/17,Premier League,41,215.7
+Swansea City,16/17,Premier League,41,137.1
+Burnley FC,16/17,Premier League,40,81.8
+Watford FC,16/17,Premier League,40,189.35
+Hull City,16/17,Premier League,34,132.95
+Middlesbrough FC,16/17,Premier League,28,121.75
+Sunderland AFC,16/17,Premier League,24,112.5
+Real Madrid,16/17,La Liga,93,743.1
+FC Barcelona,16/17,La Liga,90,787.2
+Atlético Madrid,16/17,La Liga,78,456.9
+Sevilla FC,16/17,La Liga,72,236.4
+Villarreal CF,16/17,La Liga,67,158.7
+Real Sociedad,16/17,La Liga,64,110.5
+Athletic Bilbao,16/17,La Liga,63,151.6
+RCD Espanyol,16/17,La Liga,56,84.7
+Deportivo Alavés,16/17,La Liga,55,39.8
+SD Eibar,16/17,La Liga,54,52.1
+Málaga CF,16/17,La Liga,46,73.9
+Valencia CF,16/17,La Liga,46,286.4
+Celta de Vigo,16/17,La Liga,45,95.5
+UD Las Palmas,16/17,La Liga,39,55.9
+Real Betis,16/17,La Liga,39,76.8
+Deportivo de La Coruña,16/17,La Liga,36,92.8
+CD Leganés,16/17,La Liga,35,47.3
+Sporting Gijón,16/17,La Liga,31,50.5
+CA Osasuna,16/17,La Liga,22,36.9
+Granada CF,16/17,La Liga,20,85.5
+Bayern Munchen,15/16,Bundesliga,88,568.1
+Borussia Dortmund,15/16,Bundesliga,78,302.1
+Bayer Leverkusen,15/16,Bundesliga,60,189.65
+Bor. Monchengladbach,15/16,Bundesliga,55,140.9
+FC Schalke 04,15/16,Bundesliga,52,192.7
+1. FSV Mainz 05,15/16,Bundesliga,50,58.93
+Hertha BSC,15/16,Bundesliga,50,62.73
+VfL Wolfsburg,15/16,Bundesliga,45,238.4
+1. FC Köln,15/16,Bundesliga,43,53.8
+Hamburger SV,15/16,Bundesliga,41,53
+FC Ingolstadt 04,15/16,Bundesliga,40,27.45
+FC Augsburg,15/16,Bundesliga,38,55.95
+Werder Bremen,15/16,Bundesliga,38,54.6
+SV Darmstadt 98,15/16,Bundesliga,38,18.75
+1899 Hoffenheim,15/16,Bundesliga,37,91.85
+Eintracht Frankfurt,15/16,Bundesliga,36,69.3
+VfB Stuttgart,15/16,Bundesliga,33,74.05
+Hannover 96,15/16,Bundesliga,25,59.95
+Leicester City,15/16,Premier League,81,91.25
+Arsenal FC,15/16,Premier League,71,408.6
+Tottenham Hotspur,15/16,Premier League,70,253.75
+Manchester City,15/16,Premier League,66,452.75
+Manchester United,15/16,Premier League,66,374.15
+Southampton FC,15/16,Premier League,63,187.5
+West Ham United,15/16,Premier League,62,185.2
+Liverpool FC,15/16,Premier League,60,325
+Stoke City,15/16,Premier League,51,127.25
+Chelsea FC,15/16,Premier League,50,579.8
+Everton FC,15/16,Premier League,47,204.13
+Swansea City,15/16,Premier League,47,138.2
+Watford FC,15/16,Premier League,45,110.13
+West Bromwich Albion,15/16,Premier League,43,117
+Crystal Palace,15/16,Premier League,42,121
+AFC Bournemouth,15/16,Premier League,42,68.03
+Sunderland AFC,15/16,Premier League,39,128.25
+Newcastle United,15/16,Premier League,37,200.65
+Norwich City,15/16,Premier League,34,103.75
+Aston Villa,15/16,Premier League,17,112.3
+FC Barcelona,15/16,La Liga,91,618.5
+Real Madrid,15/16,La Liga,90,700.5
+Atlético Madrid,15/16,La Liga,88,336
+Villarreal CF,15/16,La Liga,64,115.3
+Athletic Bilbao,15/16,La Liga,62,122.9
+Celta de Vigo,15/16,La Liga,60,63.8
+Sevilla FC,15/16,La Liga,52,186.5
+Málaga CF,15/16,La Liga,48,78.2
+Real Sociedad,15/16,La Liga,48,122.25
+Real Betis,15/16,La Liga,45,72.45
+Valencia CF,15/16,La Liga,44,254.5
+UD Las Palmas,15/16,La Liga,44,29.25
+SD Eibar,15/16,La Liga,43,45.95
+RCD Espanyol,15/16,La Liga,43,61.7
+Deportivo de La Coruña,15/16,La Liga,42,51.35
+Sporting Gijón,15/16,La Liga,39,30.5
+Granada CF,15/16,La Liga,39,73.2
+Rayo Vallecano,15/16,La Liga,38,53.8
+Getafe CF,15/16,La Liga,36,55.15
+Levante UD,15/16,La Liga,32,68.2
+Bayern Munchen,14/15,Bundesliga,79,566
+VfL Wolfsburg,14/15,Bundesliga,69,143.48
+Bor. Monchengladbach,14/15,Bundesliga,66,117.28
+Bayer Leverkusen,14/15,Bundesliga,61,162.55
+FC Augsburg,14/15,Bundesliga,49,40.8
+FC Schalke 04,14/15,Bundesliga,48,203.8
+Borussia Dortmund,14/15,Bundesliga,46,294.6
+1899 Hoffenheim,14/15,Bundesliga,44,103.98
+Eintracht Frankfurt,14/15,Bundesliga,43,59.45
+Werder Bremen,14/15,Bundesliga,43,52.2
+1. FSV Mainz 05,14/15,Bundesliga,40,49.4
+1. FC Köln,14/15,Bundesliga,40,44.65
+Hannover 96,14/15,Bundesliga,37,61.6
+VfB Stuttgart,14/15,Bundesliga,36,91.95
+Hertha BSC,14/15,Bundesliga,35,63.58
+Hamburger SV,14/15,Bundesliga,35,76.4
+SC Freiburg,14/15,Bundesliga,34,62.6
+SC Paderborn 07,14/15,Bundesliga,31,20.95
+Chelsea FC,14/15,Premier League,87,526.1
+Manchester City,14/15,Premier League,79,478
+Arsenal FC,14/15,Premier League,75,404.35
+Manchester United,14/15,Premier League,70,522.4
+Tottenham Hotspur,14/15,Premier League,64,298.25
+Liverpool FC,14/15,Premier League,62,285
+Southampton FC,14/15,Premier League,60,150.4
+Swansea City,14/15,Premier League,56,107.7
+Stoke City,14/15,Premier League,54,128.85
+Crystal Palace,14/15,Premier League,48,89.3
+Everton FC,14/15,Premier League,47,177.5
+West Ham United,14/15,Premier League,47,123
+West Bromwich Albion,14/15,Premier League,44,100.6
+Leicester City,14/15,Premier League,41,55.85
+Newcastle United,14/15,Premier League,39,139.85
+Sunderland AFC,14/15,Premier League,38,115.25
+Aston Villa,14/15,Premier League,38,127
+Hull City,14/15,Premier League,35,122.25
+Burnley FC,14/15,Premier League,33,36.75
+Queens Park Rangers,14/15,Premier League,30,115.05
+FC Barcelona,14/15,La Liga,94,598.45
+Real Madrid,14/15,La Liga,92,647.65
+Atlético Madrid,14/15,La Liga,78,289
+Valencia CF,14/15,La Liga,77,137.3
+Sevilla FC,14/15,La Liga,76,122.85
+Villarreal CF,14/15,La Liga,60,88.6
+Athletic Bilbao,14/15,La Liga,55,110.5
+Celta de Vigo,14/15,La Liga,51,39.4
+Málaga CF,14/15,La Liga,50,62.35
+RCD Espanyol,14/15,La Liga,49,55.1
+Rayo Vallecano,14/15,La Liga,49,52.6
+Real Sociedad,14/15,La Liga,46,107.3
+Elche CF,14/15,La Liga,41,31.38
+Getafe CF,14/15,La Liga,37,48.15
+Levante UD,14/15,La Liga,37,47.1
+SD Eibar,14/15,La Liga,35,21.1
+Deportivo de La Coruña,14/15,La Liga,35,48.6
+Granada CF,14/15,La Liga,35,60.98
+UD Almería,14/15,La Liga,32,25.1
+Córdoba CF,14/15,La Liga,20,44.7
+Bayern Munchen,13/14,Bundesliga,90,566
+Borussia Dortmund,13/14,Bundesliga,71,294.6
+FC Schalke 04,13/14,Bundesliga,64,203.8
+Bayer Leverkusen,13/14,Bundesliga,61,162.55
+VfL Wolfsburg,13/14,Bundesliga,60,143.48
+Bor. Monchengladbach,13/14,Bundesliga,55,117.28
+1. FSV Mainz 05,13/14,Bundesliga,53,49.4
+FC Augsburg,13/14,Bundesliga,52,40.8
+1899 Hoffenheim,13/14,Bundesliga,44,103.98
+Hannover 96,13/14,Bundesliga,42,61.6
+Hertha BSC,13/14,Bundesliga,41,63.58
+Werder Bremen,13/14,Bundesliga,39,52.2
+Eintracht Frankfurt,13/14,Bundesliga,36,59.45
+SC Freiburg ,13/14,Bundesliga,36,62.6
+VfB Stuttgart,13/14,Bundesliga,32,91.95
+Hamburger SV,13/14,Bundesliga,27,97.7
+1.FC Nuremberg ,13/14,Bundesliga,26,29.78
+Eintracht Braunschweig,13/14,Bundesliga,25,23.4
+Bayern Munchen,12/13,Bundesliga,91,407.3
+Borussia Dortmund,12/13,Bundesliga,66,227.68
+Bayer Leverkusen,12/13,Bundesliga,65,115.9
+FC Schalke 04,12/13,Bundesliga,55,171
+SC Freiburg,12/13,Bundesliga,51,45.45
+Eintracht Frankfurt,12/13,Bundesliga,51,51.2
+Hamburger SV,12/13,Bundesliga,48,31.1
+Bor. Monchengladbach,12/13,Bundesliga,47,81
+Hannover 96,12/13,Bundesliga,45,88
+1.FC Nuremberg ,12/13,Bundesliga,44,42.65
+VfL Wolfsburg,12/13,Bundesliga,43,120.33
+VfB Stuttgart,12/13,Bundesliga,43,102.03
+1. FSV Mainz 05,12/13,Bundesliga,42,50.95
+Werder Bremen,12/13,Bundesliga,34,79.2
+FC Augsburg,12/13,Bundesliga,33,47
+1899 Hoffenheim,12/13,Bundesliga,31,85.03
+Fortuna Düsseldorf,12/13,Bundesliga,30,31.75
+SpVgg Greuther Fürth,12/13,Bundesliga,21,29.15
+Borussia Dortmund,11/12,Bundesliga,81,158.7
+Bayern Munich ,11/12,Bundesliga,73,332.85
+FC Schalke 04,11/12,Bundesliga,64,129.75
+Bor. Monchengladbach,11/12,Bundesliga,60,65.55
+Bayer Leverkusen,11/12,Bundesliga,54,138.05
+VfB Stuttgart,11/12,Bundesliga,53,93.45
+Hannover 96,11/12,Bundesliga,48,64.65
+VfL Wolfsburg,11/12,Bundesliga,44,106.28
+Werder Bremen,11/12,Bundesliga,42,113.5
+1.FC Nuremberg,11/12,Bundesliga,42,40.3
+1899 Hoffenheim,11/12,Bundesliga,41,86.58
+SC Freiburg,11/12,Bundesliga,40,54.73
+1.FSV Mainz 05,11/12,Bundesliga,39,49.85
+FC Augsburg,11/12,Bundesliga,38,29.2
+Hamburger SV,11/12,Bundesliga,36,101.1
+Hertha BSC,11/12,Bundesliga,31,45.78
+1. FC Köln,11/12,Bundesliga,30,68.68
+1. FC Kaiserslautern,11/12,Bundesliga,23,46.45
+Borussia Dortmund,10/11,Bundesliga,75,125.25
+Bayer Leverkusen,10/11,Bundesliga,68,141.35
+Bayern Munchen,10/11,Bundesliga,65,295.85
+Hannover 96,10/11,Bundesliga,60,47.88
+1. FSV Mainz 05,10/11,Bundesliga,58,53.6
+1.FC Nuremberg,10/11,Bundesliga,47,39.7
+1. FC Kaiserslautern,10/11,Bundesliga,46,37.8
+Hamburger SV,10/11,Bundesliga,45,134.8
+SC Freiburg,10/11,Bundesliga,44,40.6
+1. FC Köln,10/11,Bundesliga,44,55.7
+1899 Hoffenheim,10/11,Bundesliga,43,82.15
+VfB Stuttgart,10/11,Bundesliga,42,100.1
+Werder Bremen,10/11,Bundesliga,41,129.4
+FC Schalke 04,10/11,Bundesliga,40,144.6
+VfL Wolfsburg,10/11,Bundesliga,38,156.4
+Bor. Monchengladbach,10/11,Bundesliga,36,60.9
+Eintracht Frankfurt,10/11,Bundesliga,34,58.4
+FC St. Pauli,10/11,Bundesliga,29,30.65
+Manchester City ,13/14,Premier League,86,480.25
+Liverpool FC ,13/14,Premier League,84,252
+Chelsea FC ,13/14,Premier League,82,460.75
+Arsenal FC ,13/14,Premier League,79,290.5
+Everton FC ,13/14,Premier League,72,157.25
+Tottenham Hotspur ,13/14,Premier League,69,297.5
+Manchester United ,13/14,Premier League,64,393.25
+Southampton FC ,13/14,Premier League,56,95.75
+Stoke City ,13/14,Premier League,50,94.8
+Newcastle United ,13/14,Premier League,49,169.5
+Crystal Palace ,13/14,Premier League,45,43
+Swansea City ,13/14,Premier League,42,117.75
+West Ham United ,13/14,Premier League,40,95.75
+Sunderland AFC ,13/14,Premier League,38,99.1
+Aston Villa ,13/14,Premier League,38,117.25
+Hull City ,13/14,Premier League,37,54.5
+West Bromwich Albion ,13/14,Premier League,36,73.75
+Norwich City ,13/14,Premier League,33,81.55
+Fulham FC ,13/14,Premier League,32,79.75
+Cardiff City ,13/14,Premier League,30,60.6
+Manchester United ,12/13,Premier League,89,398.5
+Manchester City ,12/13,Premier League,78,510
+Chelsea FC ,12/13,Premier League,75,410.5
+Arsenal FC ,12/13,Premier League,73,373.25
+Tottenham Hotspur ,12/13,Premier League,72,284
+Everton FC ,12/13,Premier League,63,116.5
+Liverpool FC ,12/13,Premier League,61,228.1
+West Bromwich Albion ,12/13,Premier League,49,80
+Swansea City ,12/13,Premier League,46,67.25
+West Ham United ,12/13,Premier League,46,69.95
+Norwich City ,12/13,Premier League,44,59.7
+Fulham FC ,12/13,Premier League,43,94.5
+Stoke City ,12/13,Premier League,42,84.1
+Southampton FC ,12/13,Premier League,41,43.3
+Aston Villa ,12/13,Premier League,41,116.5
+Newcastle United ,12/13,Premier League,41,148.95
+Sunderland AFC ,12/13,Premier League,39,94.25
+Wigan Athletic ,12/13,Premier League,36,77.5
+Reading FC ,12/13,Premier League,28,32
+Queens Park Rangers ,12/13,Premier League,25,89.25
+Manchester City ,11/12,Premier League,89,441.5
+Manchester United ,11/12,Premier League,89,405.3
+Arsenal FC ,11/12,Premier League,70,279.35
+Tottenham Hotspur ,11/12,Premier League,69,290
+Newcastle United ,11/12,Premier League,65,105.5
+Chelsea FC ,11/12,Premier League,64,397.3
+Everton FC ,11/12,Premier League,56,167.8
+Liverpool FC ,11/12,Premier League,52,293.55
+Fulham FC ,11/12,Premier League,52,97
+West Bromwich Albion ,11/12,Premier League,47,80.75
+Swansea City ,11/12,Premier League,47,28.63
+Norwich City ,11/12,Premier League,47,22.93
+Sunderland AFC ,11/12,Premier League,45,119.2
+Stoke City ,11/12,Premier League,45,83
+Wigan Athletic ,11/12,Premier League,43,64.55
+Aston Villa ,11/12,Premier League,38,127
+Queens Park Rangers ,11/12,Premier League,37,42.13
+Bolton Wanderers ,11/12,Premier League,36,87.6
+Blackburn Rovers ,11/12,Premier League,31,64.9
+Wolverhampton Wanderers ,11/12,Premier League,25,79.05
+Manchester United ,10/11,Premier League,80,369.5
+Chelsea FC ,10/11,Premier League,71,360
+Manchester City ,10/11,Premier League,71,360.3
+Arsenal FC ,10/11,Premier League,68,303
+Tottenham Hotspur ,10/11,Premier League,62,282.7
+Liverpool FC ,10/11,Premier League,58,275
+Everton FC ,10/11,Premier League,54,176.4
+Fulham FC ,10/11,Premier League,49,100.25
+Aston Villa ,10/11,Premier League,48,142.15
+Sunderland AFC ,10/11,Premier League,47,105.25
+West Bromwich Albion ,10/11,Premier League,47,71.25
+Newcastle United ,10/11,Premier League,46,78.75
+Stoke City ,10/11,Premier League,46,82
+Bolton Wanderers ,10/11,Premier League,46,83.25
+Blackburn Rovers ,10/11,Premier League,43,73.25
+Wigan Athletic ,10/11,Premier League,42,72
+Wolverhampton Wanderers ,10/11,Premier League,40,71
+Birmingham City ,10/11,Premier League,39,75.55
+Blackpool FC ,10/11,Premier League,39,27.08
+West Ham United ,10/11,Premier League,33,116.65
+Atlético Madrid ,13/14,La Liga,90,220
+FC Barcelona ,13/14,La Liga,87,587.3
+Real Madrid ,13/14,La Liga,87,565
+Athletic Bilbao ,13/14,La Liga,70,108.2
+Sevilla FC ,13/14,La Liga,63,114.7
+Villarreal CF ,13/14,La Liga,59,53.2
+Real Sociedad ,13/14,La Liga,59,103.5
+Valencia CF ,13/14,La Liga,49,153.9
+Celta de Vigo ,13/14,La Liga,49,45.1
+Levante UD ,13/14,La Liga,48,38.3
+Málaga CF ,13/14,La Liga,45,51.6
+Rayo Vallecano ,13/14,La Liga,43,31.4
+Getafe CF ,13/14,La Liga,42,48.3
+RCD Espanyol,13/14,La Liga,42,57.1
+Granada CF ,13/14,La Liga,41,57.2
+Elche CF ,13/14,La Liga,40,42.5
+UD Almería ,13/14,La Liga,40,28.4
+CA Osasuna ,13/14,La Liga,39,43.1
+Real Valladolid CF ,13/14,La Liga,36,35.7
+Real Betis Balompié ,13/14,La Liga,25,59.7
+FC Barcelona ,12/13,La Liga,100,599.5
+Real Madrid ,12/13,La Liga,85,534
+Atlético Madrid ,12/13,La Liga,76,169.3
+Real Sociedad ,12/13,La Liga,66,70
+Valencia CF ,12/13,La Liga,65,178.2
+Málaga CF ,12/13,La Liga,57,80.3
+Real Betis Balompié ,12/13,La Liga,56,42.3
+Rayo Vallecano ,12/13,La Liga,53,25.6
+Sevilla FC ,12/13,La Liga,50,130.4
+Getafe CF ,12/13,La Liga,47,67.2
+Levante UD ,12/13,La Liga,46,31.75
+Athletic Bilbao ,12/13,La Liga,45,144.8
+RCD Espanyol,12/13,La Liga,44,52
+Real Valladolid CF ,12/13,La Liga,43,21.35
+Granada CF ,12/13,La Liga,42,64.2
+CA Osasuna ,12/13,La Liga,39,38.4
+Celta de Vigo ,12/13,La Liga,37,23
+RCD Mallorca ,12/13,La Liga,36,35
+Deportivo de La Coruña ,12/13,La Liga,35,48.85
+Real Zaragoza ,12/13,La Liga,34,38.7
+Real Madrid ,11/12,La Liga,100,547.5
+FC Barcelona ,11/12,La Liga,91,606.6
+Valencia CF ,11/12,La Liga,61,186
+Málaga CF ,11/12,La Liga,58,129.8
+Atlético Madrid ,11/12,La Liga,56,168.6
+Levante UD ,11/12,La Liga,55,31.5
+CA Osasuna ,11/12,La Liga,54,38.6
+RCD Mallorca ,11/12,La Liga,52,57.1
+Sevilla FC ,11/12,La Liga,50,142
+Athletic Bilbao ,11/12,La Liga,49,121.1
+Getafe CF ,11/12,La Liga,47,55.8
+Real Sociedad ,11/12,La Liga,47,59.3
+Real Betis Balompié ,11/12,La Liga,47,45.2
+RCD Espanyol,11/12,La Liga,46,66.1
+Rayo Vallecano ,11/12,La Liga,43,20.1
+Real Zaragoza ,11/12,La Liga,43,36.6
+Granada CF ,11/12,La Liga,42,26.5
+Villarreal CF ,11/12,La Liga,41,147.9
+Sporting Gijón ,11/12,La Liga,37,48.1
+Racing Santander ,11/12,La Liga,27,34.4
+FC Barcelona ,10/11,La Liga,96,527.6
+Real Madrid ,10/11,La Liga,92,517.5
+Valencia CF ,10/11,La Liga,71,182.5
+Villarreal CF ,10/11,La Liga,62,138.5
+Sevilla FC ,10/11,La Liga,58,191.5
+Athletic Bilbao ,10/11,La Liga,58,107.7
+Atlético Madrid ,10/11,La Liga,58,188.3
+RCD Espanyol,10/11,La Liga,49,62.8
+CA Osasuna ,10/11,La Liga,47,57.1
+Sporting Gijón ,10/11,La Liga,47,58.1
+Málaga CF ,10/11,La Liga,46,58.3
+Racing Santander ,10/11,La Liga,46,52.7
+Real Zaragoza ,10/11,La Liga,45,64.3
+Real Sociedad ,10/11,La Liga,45,50.9
+Levante UD ,10/11,La Liga,45,31.7
+Getafe CF ,10/11,La Liga,44,76.4
+RCD Mallorca ,10/11,La Liga,44,52.8
+Deportivo de La Coruña ,10/11,La Liga,43,64.6
+Hércules CF ,10/11,La Liga,35,52.7
+UD Almería ,10/11,La Liga,30,66.2

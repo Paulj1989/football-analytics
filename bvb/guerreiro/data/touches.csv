@@ -1,0 +1,19 @@
+round,opponent,start,position,min,touches,def_pen,def_third,mid_third,att_third,att_pen
+1,Augsburg,Y,WB,59,77,1,8,37,33,4
+2,Freiburg,Y,WB,83,92,0,20,44,32,5
+3,Schalke 04,Y,LB,90,148,0,26,83,50,5
+4,Bayern Munich,Y,LB,90,84,5,28,39,23,2
+5,Hertha BSC,Y,WB,84,96,2,13,40,49,7
+6,Stuttgart,Y,WBLW,85,82,4,15,35,34,3
+7,Werder Bremen,Y,LB,90,113,2,25,64,33,6
+8,Union Berlin,Y,LBDM,90,100,4,23,52,35,2
+9,Wolfsburg,Y,LB,90,88,3,27,41,28,2
+10,RB Leipzig,Y,LBLM,90,86,6,33,37,24,5
+11,Mainz 05,Y,LB,90,118,3,22,72,41,3
+12,Leverkusen,Y,LB,90,65,5,21,31,15,2
+13,M'Gladbach,Y,LB,90,72,1,13,34,31,3
+14,Augsburg,Y,LB,82,124,1,16,78,45,7
+15,Freiburg,Y,LB,90,99,2,18,59,28,1
+16,Hoffenheim,Y,LB,90,92,3,25,52,24,2
+17,Schalke 04,Y,LB,90,87,4,16,49,26,2
+18,Arminia,Y,LB,90,91,1,25,53,18,7
