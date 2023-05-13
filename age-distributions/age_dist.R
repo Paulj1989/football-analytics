@@ -1,3 +1,6 @@
+
+# Setup ----
+
 library(dplyr)
 library(ggplot2)
 library(glue)
@@ -27,11 +30,7 @@ theme_set(theme_minimal(base_family = "Inter", base_size = 14)) +
     panel.grid.minor.x = element_blank()
   )
 
-## %######################################################%##
-#                                                          #
-####             Age Distribution by League             ####
-#                                                          #
-## %######################################################%##
+# Age Distribution by League ----
 
 league_age <-
   age_data |>
@@ -129,11 +128,7 @@ ggplot(league_age, aes(age, n, fill = league)) +
 ggsave(here::here("age-distributions", "figures", "stream.png"),
        dpi = 320, width = 16, height = 9)
 
-## %######################################################% ##
-#                                                            #
-####            Age Distribution by Position              ####
-#                                                            #
-## %######################################################% ##
+# Age Distribution by Position ----
 
 pos_age <-
   age_data |>
