@@ -1,0 +1,409 @@
+---
+title: "Fear the Wall Ratings/MOTM Analysis"
+subtitle: "Analysing Fear the Wall's Player Ratings & MOTM Polls for the 2022/2023 Season"
+format: 
+  html:
+    warning: false
+    embed-resources: true
+    page-layout: full
+    fig-width: 20
+    fig-height: 10
+    fig-align: center
+    code-copy: true
+    mainfont: Inter
+    monofont: Fira Code Light
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: setup
+#| output: false
+#| code-fold: true
+#| code-summary: 'Setup Code (Click to Expand)'
+
+# packages
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(dplyr)
+})
+
+# plot function
+source(here::here("R", "plot_theme.R"))
+
+# plot theme
+theme_set(theme_ftw())
+
+# data
+ratings <- readr::read_csv(here::here("bvb", "ratings", "data", "ratings.csv"))
+motm <- readr::read_csv(here::here("bvb", "ratings", "data", "motm.csv"))
+
+```
+
+```{r}
+#| label: functions
+#| output: false
+#| code-fold: true
+#| code-summary: 'Helper Functions (Click to Expand)'
+
+# function for plotting ratings
+plot_ratings <- function(data) {
+  data |>
+    ggplot(aes(as.Date(Date), rating)) +
+    geom_smooth(
+      aes(colour = player_colours, alpha = player_alpha),
+      method = lm, formula = y ~ splines::bs(x),
+      se = FALSE, linewidth = 1.2
+    ) +
+    geom_point(
+      aes(fill = player_colours, alpha = player_alpha, size = player_size),
+      shape = 21, stroke = 1
+    ) +
+    scale_colour_identity() +
+    scale_fill_identity() +
+    scale_alpha_identity() +
+    scale_size_identity() +
+    scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+    scale_y_continuous(breaks = seq(0, 10, 1), limits = c(0, 10)) +
+    labs(
+      x = NULL, y = "Rating",
+      caption = glue::glue(
+        "Source: Fear the Wall Player Ratings | ",
+        "Graphic: Paul Johnson (@paul_johnson89)"
+      )
+    ) +
+    theme(axis.text.x = element_text(angle = 30, vjust = 0.5, hjust = 0.5))
+}
+
+# function for wrangling overall ratings
+get_overall_ratings <- function() {
+  ratings |>
+    tidyr::pivot_longer(
+      cols = `Gregor Kobel`:Overall,
+      names_to = "player",
+      values_to = "rating"
+    ) |>
+    filter(!is.na(rating)) |>
+    group_by(Game, Date, player) |>
+    summarise(rating = mean(rating)) |>
+    mutate(
+      player_colours = case_when(
+        player == "Overall" ~ "#ffa600",
+        .default = "#dee2e6"
+      ),
+      player_alpha = case_when(
+        player == "Overall" ~ .8,
+        .default = .2
+      ),
+      player_size = case_when(
+        player == "Overall" ~ 6,
+        .default = 4
+      )
+    ) |>
+    arrange(Date)
+}
+
+# function for wrangling player ratings
+get_player_ratings <- function(players) {
+  summarised_ratings <-
+    ratings |>
+    tidyr::pivot_longer(
+      cols = `Gregor Kobel`:`Anthony Modeste`,
+      names_to = "player",
+      values_to = "rating"
+    ) |>
+    filter(!is.na(rating)) |>
+    add_count(player) |>
+    group_by(Game, Date, player) |>
+    summarise(rating = mean(rating)) |>
+    arrange(Date)
+
+  if (length(players) == 1) {
+    player_ratings <-
+      summarised_ratings |>
+      mutate(
+        player_colours = case_when(
+          player == players ~ "#ffa600",
+          .default = "#dee2e6"
+        ),
+        player_alpha = case_when(
+          player == players ~ .8,
+          .default = .2
+        ),
+        player_size = case_when(
+          player == players ~ 6,
+          .default = 4
+        )
+      )
+  }
+
+  if (length(players) == 2) {
+    player_ratings <-
+      summarised_ratings |>
+      mutate(
+        player_colours = case_when(
+          player == players[1] ~ "#ffa600",
+          player == players[2] ~ "#343a40",
+          .default = "#dee2e6"
+        ),
+        player_alpha = case_when(
+          player %in% players ~ .8,
+          .default = .2
+        ),
+        player_size = case_when(
+          player %in% players ~ 6,
+          .default = 4
+        )
+      )
+  }
+
+  if (length(players) > 2) {
+    stop("Too many players. Must be 2 or less.")
+  }
+
+  return(player_ratings)
+}
+
+```
+
+## Man of the Match
+
+```{r}
+#| label: motm-winner
+
+# most man of the match awards
+motm |> 
+  add_count(MOTM) |> 
+  select(MOTM, n) |> 
+  distinct() |> 
+  arrange(desc(n))
+
+```
+
+```{r}
+#| label: motm-nominations
+
+# most man of the match nominations
+motm |> 
+  tidyr::pivot_longer(
+    cols = MOTM:`4th`,
+    names_to = "result",
+    values_to = "player"
+  ) |> 
+  filter(!is.na(player)) |> 
+  add_count(player) |> 
+  select(player, n) |> 
+  distinct() |> 
+  arrange(desc(n)) |> 
+  print(n = 24)
+
+```
+
+## Player Ratings
+
+### Overall Performance
+
+```{r}
+#| label: overall-ratings
+
+# season average overall rating
+ratings |> 
+  summarise(overall_rating = mean(Overall))
+
+# season average player rating
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  filter(!is.na(rating)) |> 
+  summarise(rating = mean(rating))
+
+```
+
+```{r}
+#| label: comp-ratings
+
+# average overall rating by competition
+ratings |> 
+  group_by(Competition) |> 
+  summarise(Overall = mean(Overall))
+
+# average player rating by competition
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  filter(!is.na(rating)) |> 
+  group_by(Competition) |> 
+  summarise(rating = mean(rating))
+
+```
+
+```{r}
+#| label: overall-plot
+
+# plot overall ratings compared with player ratings
+get_overall_ratings() |> 
+  plot_ratings() +
+  labs(
+    title = "FTW 'Overall' Ratings Across All Competitions 2022/23",
+    subtitle = glue::glue(
+      "The <b style='color:#ffa600;'>Overall</b> ratings are very close to the
+      average player ratings throughout the season, which demonstrates consistency.
+      There seems to be a relatively even split of overall ratings<br>above and 
+      below the average player ratings. Although the average performance is better 
+      in the second half of the season, some particularly dire performances drag 
+      the average down."
+    )
+  )
+
+ggsave(here::here("bvb", "ratings", "figures", "overall_rating.png"),
+       dpi = 320, width = 20, height = 10)
+
+```
+
+### Player Performance
+
+```{r}
+#| label: season-ratings
+
+# average player rating
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  dplyr::filter(!is.na(rating)) |> 
+  dplyr::add_count(player) |> 
+  dplyr::filter(n > 50) |>
+  dplyr::group_by(player) |> 
+  dplyr::summarise(rating = mean(rating)) |> 
+  dplyr::arrange(desc(rating)) |> 
+  print(n = 22)
+
+```
+
+```{r}
+#| label: game-ratings
+
+# best performance of the season
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  dplyr::filter(!is.na(rating)) |> 
+  dplyr::group_by(Game, matchday, player) |> 
+  dplyr::summarise(rating = mean(rating)) |> 
+  dplyr::arrange(desc(rating))
+
+# worst performance of the season
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  dplyr::filter(!is.na(rating)) |> 
+  dplyr::group_by(Game, matchday, player) |> 
+  dplyr::summarise(rating = mean(rating)) |> 
+  dplyr::arrange(rating)
+
+```
+
+```{r}
+#| label: player-consistency
+
+# player rating consistency
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  dplyr::filter(!is.na(rating)) |> 
+  dplyr::add_count(player) |> 
+  dplyr::filter(n > 50) |>
+  dplyr::group_by(player) |> 
+  dplyr::summarise(
+    std_dev = sd(rating),
+    var = var(rating)) |> 
+  dplyr::arrange(desc(std_dev))
+
+```
+
+
+```{r}
+#| label: donyell-malen-plot
+
+# plot malen's ratings over the season
+get_player_ratings(players = "Donyell Malen") |> 
+  plot_ratings() +
+  labs(
+    title = "Donyell Malen's Average FTW Rating Across All Competitions 2022/23",
+    subtitle = glue::glue(
+      "Comparing <b style='color:#ffa600;'>Donyell Malen</b>'s average rating 
+      over the course of the season, he was significantly below the average 
+      player rating in the first half of the season.<br>After the World Cup, 
+      however, he was one of BVB's best players. In the Hinrunde he had 7 games 
+      ranked less than a 5, and in the Ruckrunde, it was only 3."
+      )
+    )
+
+ggsave(here::here("bvb", "ratings", "figures", "malen_rating.png"),
+       dpi = 320, width = 20, height = 10)
+
+```
+
+```{r}
+#| label: reyna-and-hummels-plot
+
+# plot reyna and hummels' ratings over the season
+get_player_ratings(players = c("Gio Reyna", "Mats Hummels")) |> 
+  plot_ratings() +
+  labs(
+    title = "Gio Reyna & Mats Hummels' Average FTW Ratings Across All Competitions 2022/23",
+    subtitle = glue::glue(
+      "<b style='color:#ffa600;'>Gio Reyna</b> & <b style='color:#343a40;'>
+      Mats Hummels</b>' have been very consistent throughout the season. While 
+      Reyna's performances have some spikes, they are generally pretty close<br>
+      to the average rating. Hummels, on the other hand, has been particularly 
+      impressive, performing above the average player rating in all but a 
+      handful of games."
+      )
+    )
+
+ggsave(here::here("bvb", "ratings", "figures", "reyna_hummels_rating.png"),
+       dpi = 320, width = 20, height = 10)
+
+```
+
+### Writer Ratings
+
+```{r}
+#| label: writer-ratings
+
+# ratings mean, standard deviation, variance by writer
+ratings |> 
+  tidyr::pivot_longer(
+    cols = `Gregor Kobel`:`Anthony Modeste`,
+    names_to = "player",
+    values_to = "rating"
+  ) |> 
+  dplyr::filter(!is.na(rating)) |> 
+  dplyr::add_count(Writer) |> 
+  dplyr::filter(n > 50) |>
+  dplyr::group_by(Writer) |> 
+  dplyr::summarise(
+    mean = mean(rating),
+    std_dev = sd(rating),
+    var = var(rating)) |> 
+  arrange(desc(mean))
+
+```
