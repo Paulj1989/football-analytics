@@ -8,7 +8,7 @@ library(ggridges)
 library(statsExpressions)
 library(ggstatsplot)
 library(RcppArmadillo)
-library(WRS)
+library(WRS2)
 
 ## Data ----------
 

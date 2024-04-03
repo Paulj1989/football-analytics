@@ -1,0 +1,430 @@
+
+```{r}
+#| label: setup
+
+# import packages
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(gt)
+  library(showtext)
+  library(ggplot2)
+  library(worldfootballR)
+  library(desirability2)
+})
+
+# setup fonts
+sysfonts::font_add_google("Inter")
+showtext::showtext_auto()
+
+# set plot theme
+# inspired by https://github.com/z3tt/TidyTuesday/blob/main/R/2020_31_PalmerPenguins.Rmd
+theme_set(theme_minimal(base_size = 16, base_family = "Inter")) +
+  theme_update(
+    plot.background = element_rect(fill = "white", color = "white"),
+    panel.grid.major = element_line(color = "grey90", linewidth = .4),
+    panel.grid.minor = element_blank(),
+    axis.title.x = element_text(
+      color = "grey30", margin = margin(t = 10), size = rel(1.2)
+      ),
+    axis.title.y = element_text(
+      color = "grey30", margin = margin(r = 10), size = rel(1.2)
+      ),
+    axis.text = element_text(color = "grey50", size = rel(1.1)),
+    axis.ticks = element_line(color = "grey90", linewidth = .4),
+    axis.ticks.length = unit(.2, "lines"),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(
+      size = rel(1.1), hjust = 0, margin = margin(0, 0, 0, 5)
+      ),
+    legend.spacing = unit(0, "cm"),
+    legend.box.spacing = unit(0.5, "cm"),
+    legend.key.width = unit(1, "cm"),
+    plot.title = element_text(
+      hjust = 0, color = "black",
+      size = rel(2), margin = margin(t = 5, b = 5)
+    ),
+    plot.subtitle = element_text(
+      hjust = 0, color = "grey30",
+      lineheight = 0.8, size = rel(1.2), 
+      margin = margin(10, 0, 10, 0)
+    ),
+    plot.title.position = "plot",
+    plot.caption = element_text(
+      color = "grey50", size = rel(1.1), hjust = 1,
+      margin = margin(15, 0, 0, 0)
+    ),
+    plot.caption.position = "plot",
+    plot.margin = margin(rep(20, 4))
+  )
+
+# function for creating tables
+format_table <-
+  function(data, cols) {
+    data |>
+      gt() |>
+      fmt_number(columns = cols, decimals = 2) |>
+      tab_spanner(
+        label = "Desirability Scores",
+        columns = cols
+      ) |>
+      cols_align(
+        align = "center",
+        columns = cols
+      ) |>
+      tab_source_note(source_note = "Source: FB Ref Via {worldfootballR}") |>
+      tab_options(
+        table.width = pct(100),
+        table.font.names = "Inter"
+      )
+  }
+```
+
+```{r}
+#| label: get-data
+
+# get raw data
+standard_stats <-
+  fb_big5_advanced_season_stats(
+    season_end_year = 2024,
+    stat_type = "standard",
+    team_or_player = "player"
+  ) |>
+  janitor::clean_names(
+    replace = c(
+      "_Playing" = "",
+      "_Expected" = "",
+      "_Progression" = "",
+      "PK" = "pk",
+      "PKatt" = "pk_att",
+      "xG" = "xg",
+      "xAG" = "xag",
+      "_Per_90" = "90",
+      "_Per" = "90"
+    )
+  ) |>
+  mutate(
+    across(
+      starts_with("prg"), ~ round(.x/mins90, 2), 
+      .names = "{.col}90"
+      ),
+    position = stringr::str_split_i(pos, pattern = ",", i = 1)
+    ) |> 
+  select(player, position, squad, comp, ends_with("90"))
+
+shooting_stats <-
+  fb_big5_advanced_season_stats(
+    season_end_year = 2024,
+    stat_type = "shooting",
+    team_or_player = "player"
+    ) |> 
+  janitor::clean_names(
+    replace = c(
+      "_Standard" = "",
+      "_per_90" = "90"
+      )
+    ) |>
+  select(player, squad, sh90)
+
+passing_stats <-
+  fb_big5_advanced_season_stats(
+    season_end_year = 2024,
+    stat_type = "passing",
+    team_or_player = "player"
+  ) |> 
+  janitor::clean_names(
+    replace = c(
+      "_Expected" = "",
+      "xA" = "xa"
+      )
+    ) |>
+  mutate(xa90 = round(xa/mins_per_90, 2)) |> 
+  select(player, squad, xa90)
+
+gca_stats <-
+  fb_big5_advanced_season_stats(
+    season_end_year = 2024, 
+    stat_type = "gca", 
+    team_or_player = "player"
+  ) |>
+  janitor::clean_names(replace = c("_SCA" = "")) |> 
+  select(player, squad, sca90)
+
+possession_stats <-
+  fb_big5_advanced_season_stats(
+    season_end_year = 2024,
+    stat_type = "possession",
+    team_or_player = "player"
+  ) |> 
+  janitor::clean_names() |> 
+  mutate(pen_touches90 = round(att_pen_touches/90, 2)) |> 
+  select(player, squad, pen_touches90)
+
+# join full dataset
+bundesliga_stats <-
+  standard_stats |> 
+  full_join(shooting_stats) |> 
+  full_join(passing_stats) |> 
+  full_join(gca_stats) |> 
+  full_join(possession_stats) |> 
+  tibble() |> 
+  tidyr::drop_na() |> 
+  filter(comp == "Bundesliga" & mins90 > 7 & position != "GK") |> 
+  rename(
+    team = squad, 
+    league = comp,
+    npg90 = g_minus_pk90
+    )
+```
+
+```{r}
+#| label: goal-threat
+
+goal_threat <- 
+  bundesliga_stats |>
+  mutate(
+    # maximise npg90 & npxg90 with higher scale
+    across(
+      .cols = c(npg90, npxg90),
+      ~ d_max(.x, use_data = TRUE, scale = 2),
+      .names = "d_{.col}"
+      ),
+    # maximise shots90 & pen_touches90 with lower scale
+    across(
+      .cols = c(sh90, pen_touches90),
+      ~ d_max(.x, use_data = TRUE, scale = 0.5),
+      .names = "d_{.col}"
+    ),
+    # overall desirability score for goal scoring
+    # tolerance set to 0.1 so that lowest values are not 0
+    d_goals = d_overall(across(starts_with("d_")), tolerance = 0.1)
+  ) |> 
+  select(player, position, team, league, starts_with("d_")) |> 
+  arrange(desc(d_goals)) |> 
+  rename_at(vars(player:league), snakecase::to_title_case) |> 
+  rename(
+    "Non-Penalty Goals" = d_npg90,
+    "Non-Penalty xG" = d_npxg90,
+    "Shots" = d_sh90,
+    "Penalty Area Touches" = d_pen_touches90,
+    "Overall" = d_goals
+  )
+
+goal_threat |> 
+  select(!League) |> 
+  head(5) |>
+  format_table(cols = 4:8) |> 
+  tab_header(title = "Table 1: Bundesliga Goal Threat Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "buli_goals.png"), 
+    expand = 10
+    )
+
+goal_threat |>
+  filter(Team == "Dortmund") |>
+  select(!Team & !League) |> 
+  head(5) |> 
+  format_table(cols = 3:7) |> 
+  tab_header(title = "Table 2: Borussia Dortmund Goal Threat Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "bvb_goals.png"), 
+    expand = 10
+    )
+```
+
+```{r}
+#| label: chance-creation
+
+chance_creation <- 
+  bundesliga_stats |>
+  mutate(
+    across(
+      .cols = c(ast90, xa90),
+      ~ d_max(.x, use_data = TRUE),
+      .names = "d_{.col}"
+      ),
+    d_sca90 = d_max(sca90, use_data = TRUE, scale = 0.5),
+    d_chances = d_overall(across(starts_with("d_")), tolerance = 0.1)
+  ) |> 
+  select(player, position, team, league, starts_with("d_")) |> 
+  rename_at(vars(player:league), snakecase::to_title_case) |> 
+  rename(
+    "Assists" = d_ast90,
+    "xA" = d_xa90,
+    "SCA" = d_sca90,
+    "Overall" = d_chances
+  ) |> 
+  arrange(desc(Overall))
+
+chance_creation |> 
+  select(!League) |> 
+  head(5) |>
+  format_table(cols = 4:7) |> 
+  tab_header(title = "Table 3: Bundesliga Chance Creation Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "buli_chances.png"), 
+    expand = 10
+    )
+
+chance_creation |>
+  filter(Team == "Dortmund") |>
+  select(!Team & !League) |> 
+  head(5) |> 
+  format_table(cols = 3:6) |> 
+  tab_header(title = "Table 4: Borussia Dortmund Chance Creation Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "bvb_chances.png"), 
+    expand = 10
+    )
+```
+
+```{r}
+#| label: ball-progression
+
+ball_progression <-
+  bundesliga_stats |>
+  mutate(
+    across(
+      starts_with("prg"),
+      ~ d_max(.x, use_data = TRUE),
+      .names = "d_{.col}"
+    ),
+    d_prg = d_overall(across(starts_with("d_")), tolerance = 0.1)
+  ) |>
+  select(player, position, team, league, starts_with("d_")) |>
+  arrange(desc(d_prg)) |>
+  rename_at(vars(player:league), snakecase::to_title_case) |> 
+  rename(
+    "Progressive Carrying" = d_prg_c90,
+    "Progressive Passing" = d_prg_p90,
+    "Progressive Receptions" = d_prg_r90,
+    "Overall" = d_prg
+  )
+
+ball_progression |> 
+  select(!League) |> 
+  head(5) |>
+  format_table(cols = 4:7) |> 
+  tab_header(title = "Table 5: Bundesliga Ball Progression Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "buli_progression.png"), 
+    expand = 10
+    )
+
+ball_progression |>
+  filter(Team == "Dortmund") |>
+  select(!Team & !League) |> 
+  head(5) |> 
+  format_table(cols = 3:6) |> 
+  tab_header(title = "Table 6: Borussia Dortmund Ball Progression Ratings") |> 
+    gtsave(
+    here::here("bvb", "desirability", "figures", "bvb_progression.png"), 
+    expand = 10
+    )
+
+```
+
+```{r}
+#| label: offensive-rating
+
+offensive_rating <-
+  goal_threat |>
+  rename("Goal Threat" = Overall) |> 
+  full_join(chance_creation |> rename("Chance Creation" = Overall)) |>
+  full_join(ball_progression |> rename("Ball Progression" = Overall)) |>
+  mutate(
+    # downweight chance creation and ball progression desirability scores
+    across(.cols = c("Chance Creation", "Ball Progression"), ~ .x * 0.5),
+    Overall =
+      d_overall(
+        across(.cols = c("Goal Threat", "Chance Creation", "Ball Progression")),
+        geometric = FALSE
+        )
+  ) |>
+  select(
+    Player, Position, Team, League, "Goal Threat", 
+    "Chance Creation", "Ball Progression", Overall
+    ) |>
+  arrange(desc(Overall))
+```
+
+```{r}
+
+offensive_rating |> 
+  select(!League) |> 
+  head(10) |>
+  format_table(cols = 4:7) |> 
+  tab_header(title = "Table 7: Bundesliga Overall Offensive Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "buli_offense.png"), 
+    expand = 10
+    )
+
+
+offensive_rating |>
+  filter(Team == "Dortmund") |>
+  select(!Team & !League) |> 
+  format_table(cols = 3:6) |> 
+  tab_header(title = "Table 8: Borussia Dortmund Overall Offensive Ratings") |> 
+  gtsave(
+    here::here("bvb", "desirability", "figures", "bvb_offense.png"), 
+    expand = 10
+    )
+
+```
+
+```{r}
+
+offensive_rating |> 
+  filter(Team == "Dortmund") |>
+  head(10) |> 
+  tidyr::pivot_longer(
+    cols = 5:7,  
+    names_to = "component", 
+    values_to = "value"
+    ) |> 
+  mutate(
+    component = 
+      factor(
+        component, 
+        levels = c("Goal Threat", "Chance Creation", "Ball Progression")
+        )
+    ) |> 
+  ggplot(aes(x = reorder(Player, Overall), y = value, fill = component)) + 
+  geom_col(position = position_dodge2(reverse = TRUE), colour = "grey20", linewidth = 0.5) +
+  geom_hline(yintercept = 0, colour = "grey20", linewidth = 1) +
+  coord_flip() +
+  scale_x_discrete(labels = scales::label_wrap(15)) +
+  scale_fill_manual(values = c("#ffa600", "#dee2e6", "#343a40")) +
+  labs(
+    title =  
+        "Borussia Dortmund's Best Offensive Players This Season",
+    subtitle = 
+      stringr::str_wrap(
+        glue::glue(
+          "Component desirability scores for BVB's best offensive players in ",
+          "the Bundesliga this season (as of Matchday 23). Overall ratings are ",
+          "weighted averages of goal threat (50%), chance creation (25%), and ",
+          "ball progression (25%)."
+          ),
+        width = 120
+      ),
+    x = NULL, y = "Desirability",
+    caption = 
+      "Visualisation: Paul Johnson  |  Data: FB Ref Via {worldfootballR}"
+    ) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_text(
+      colour = "grey30", lineheight = 0.8,
+      size = rel(1.2), hjust = 0.5, 
+      margin = margin(r = -25, l = -10)
+      )
+    )
+
+ggsave(
+  here::here("bvb", "desirability", "figures", "overall.png"), 
+  height = 14, width = 12.5, dpi = 120
+  )
+```
