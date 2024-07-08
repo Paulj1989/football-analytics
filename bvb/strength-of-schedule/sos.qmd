@@ -1,0 +1,244 @@
+
+```{r}
+#| label: setup
+
+# import packages
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(gt)
+  library(showtext)
+  library(ggplot2)
+  library(worldfootballR)
+})
+
+# setup fonts
+sysfonts::font_add_google("Inter")
+showtext::showtext_auto()
+
+# set plot theme
+# inspired by https://github.com/z3tt/TidyTuesday/blob/main/R/2020_31_PalmerPenguins.Rmd
+theme_set(theme_minimal(base_size = 16, base_family = "Inter")) +
+  theme_update(
+    plot.background = element_rect(fill = "white", color = "white"),
+    panel.grid.major = element_line(color = "grey90", linewidth = .4),
+    panel.grid.minor = element_blank(),
+    axis.title.x = element_text(
+      color = "grey30", margin = margin(t = 10), size = rel(1.2)
+      ),
+    axis.title.y = element_text(
+      color = "grey30", margin = margin(r = 10), size = rel(1.2)
+      ),
+    axis.text = element_text(color = "grey50", size = rel(1.1)),
+    axis.text.y = element_text(
+      colour = "grey20", size = rel(1.15), hjust = 0.5, lineheight = .4
+      ),
+    axis.ticks = element_line(color = "grey90", linewidth = .4),
+    axis.ticks.y = element_blank(),
+    axis.ticks.length = unit(.2, "lines"),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(
+      size = rel(1.1), hjust = 0, margin = margin(0, 0, 0, 5)
+      ),
+    legend.spacing = unit(0, "cm"),
+    legend.box.spacing = unit(0.5, "cm"),
+    legend.key.width = unit(1, "cm"),
+    plot.title = element_text(
+      hjust = 0, color = "black",
+      size = rel(2), margin = margin(t = 5, b = 5)
+    ),
+    plot.subtitle = element_text(
+      hjust = 0, color = "grey30",
+      lineheight = 0.8, size = rel(1.2), 
+      margin = margin(10, 0, 10, 0)
+    ),
+    plot.title.position = "plot",
+    plot.caption = element_text(
+      color = "grey50", size = rel(1.1), hjust = 1,
+      margin = margin(15, 0, 0, 0)
+    ),
+    plot.caption.position = "plot",
+    plot.margin = margin(rep(20, 4))
+  )
+
+# set gt theme
+tbl_theme <-
+  function(data, ...) {
+      data |>
+        cols_align(columns = is.numeric, align = "center") |>
+        fmt_number(columns = is.numeric, decimals = 2) |>
+        tab_source_note(source_note = "Source: FBref Via {worldfootballR}") |>
+        tab_options(
+          table.width = pct(100),
+          table.font.names = "Poppins",
+          ...
+        )
+  }
+```
+
+## Remaining Schedule
+
+```{r}
+#| label: buli-sos
+
+buli_games <-
+  worldfootballR::fb_match_results(
+    country = "GER", gender = "M", season_end_year = 2024
+  ) |>
+  fitba::get_fixtures()
+```
+
+## Team Ratings
+
+```{r}
+#| label: ratings
+
+buli_ratings <-
+  worldfootballR::fb_season_team_stats(
+    country = "GER", gender = "M", season_end_year = 2024,
+    stat_type = "standard", tier = "1st"
+  ) |>
+  fitba::calculate_team_ratings()
+```
+
+```{r}
+#| label: tbl-ratings
+
+buli_ratings |> 
+  arrange(desc(rating)) |> 
+  janitor::clean_names(case = "title") |> 
+  rename(
+    "npxGD/90" = Npxgd90,
+    "npGD/90" = Npgd90
+  ) |> 
+  gt() |>
+  tab_header(
+    title = "Table 1: Baseline Team Ratings in the Bundesliga 2023/24",
+    subtitle = 
+      glue::glue(
+        "Bundesliga team ratings (as of Matchday 27) calculated as a weighted ",
+        "average of npxGD/90 (70%) & npGD/90 (30%)"
+        ) 
+    ) |> 
+  tbl_theme() |> 
+  gtsave(here::here("bvb", "strength-of-schedule", "figures", "team_ratings.png"))
+```
+
+## Strength of Schedule
+
+```{r}
+#| label: sos
+
+buli_sos <- fitba::calculate_sos(buli_ratings, buli_games)
+```
+
+
+```{r}
+#| label: tbl-bottom-four
+
+buli_sos |>
+  select(team, sos) |> 
+  filter(team %in% c("Darmstadt 98", "Köln", "Mainz 05", "Bochum", "Wolfsburg")) |> 
+  arrange(sos) |> 
+  rename(
+    "Team" = team,
+    "Strength of Schedule (Z-Score)" = sos
+  ) |> 
+  gt() |> 
+  tab_header(
+    title = "Table 2: Bundesliga Bottom Five's Strength of Schedule",
+    subtitle = 
+      glue::glue(
+        "Strength of schedule rankings (ranked easiest to hardest) for the ",
+        "Bundesliga bottom five's remaining schedules in the 2023/24 season."
+      )
+    ) |> 
+  tab_footnote(
+    footnote = 
+      "z < 0 = Easier than league average; z > 0 = Harder than league average"
+    ) |> 
+  tbl_theme() |> 
+  gtsave(here::here("bvb", "strength-of-schedule", "figures", "bottom_five.png"))
+```
+
+
+```{r}
+#| label: tbl-top-five
+
+buli_sos |>
+  select(team, sos) |> 
+  filter(
+    team %in% c(
+      "Bayern Munich", "Leverkusen", 
+      "Stuttgart", "Dortmund", "RB Leipzig"
+      )
+    ) |> 
+  arrange(sos) |> 
+  rename(
+    "Team" = team,
+    "Strength of Schedule (Z-Score)" = sos
+  ) |> 
+  gt() |> 
+  tab_header(
+    title = "Table 3: Bundesliga Top Five's Strength of Schedule",
+    subtitle = 
+      glue::glue(
+        "Strength of schedule rankings (ranked easiest to hardest) for the ",
+        "Bundesliga top five's remaining schedules in the 2023/24 season."
+      )
+    ) |> 
+  tab_footnote(
+    footnote = 
+      "z < 0 = Easier than league average; z > 0 = Harder than league average"
+    ) |> 
+  tbl_theme() |> 
+  gtsave(here::here("bvb", "strength-of-schedule", "figures", "top_five.png"))
+```
+
+
+
+```{r}
+#| label: sos-plot
+
+buli_sos |>
+  mutate(team = forcats::fct_reorder(team, sos)) |>
+  ggplot(aes(x = team, y = sos, fill = sos > 0)) +
+  geom_col(colour = "grey20") +
+  geom_hline(yintercept = 0, colour = "grey20") +
+  geom_text(
+    aes(
+      label = round(sos, 2),
+      colour = between(sos, -0.25, 0.25),
+      hjust = case_when(
+        between(sos, -0.25, 0) ~ 1.2,
+        between(sos, 0, 0.25) ~ -0.4,
+        sos < -0.25 ~ -0.2,
+        sos > 0.25 ~ 1.2
+        )
+      ),
+    size = 5, fontface = "bold", family = "Inter"
+    ) +
+  coord_flip() +
+  scale_fill_manual(values = c("#ffa600", "#343a40"), guide = "none") +
+  scale_colour_manual(values = c("white", "grey20"), guide = "none") +
+  labs(
+    title = "Bundesliga Teams' Strength of Schedule for Remaining Games 2023/24",
+    subtitle =
+      stringr::str_wrap(
+        glue::glue(
+          "Remaining schedule difficulty in the Bundesliga, represented as ",
+          "Z-Scores. Scores above zero are harder than league average, below ",
+          "easier. Z-Scores are the standard deviation distance from the mean ",
+          "(i.e, scores of +1 (or -1) are 1 SD above (or below) mean)."
+        ),
+        width = 140
+      ),
+    x = NULL, y = "Strength of Schedule (Z-Score)",
+    caption = "Visualisation: Paul Johnson  |  Data: FB Ref Via {worldfootballR}"
+    )
+
+ggsave(
+  here::here("bvb", "strength-of-schedule", "figures", "strength_of_schedule.png"), 
+  height = 12, width = 15, dpi = 120
+  )
+```
