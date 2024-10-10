@@ -1,0 +1,248 @@
+
+```{r}
+
+# import packages
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(lme4)
+  library(gt)
+  library(ggplot2)
+  library(marginaleffects)
+})
+
+# setup fonts
+sysfonts::font_add_google("Inter")
+showtext::showtext_auto()
+
+# set plot theme
+# inspired by https://github.com/z3tt/TidyTuesday/blob/main/R/2020_31_PalmerPenguins.Rmd
+theme_set(theme_minimal(base_size = 16, base_family = "Inter")) +
+  theme_update(
+    plot.background = element_rect(fill = "white", color = "white"),
+    panel.grid.major = element_line(color = "grey90", linewidth = .4),
+    panel.grid.minor = element_blank(),
+    axis.title.x = element_text(
+      color = "grey30", margin = margin(t = 10), size = rel(1.2)
+    ),
+    axis.title.y = element_text(
+      color = "grey30", margin = margin(r = 10), size = rel(1.2)
+    ),
+    axis.text = element_text(color = "grey50", size = rel(1.1)),
+    axis.text.x = element_text(angle = 30, vjust = 1, hjust = .75),
+    axis.ticks = element_line(color = "grey90", linewidth = .4),
+    axis.ticks.length = unit(.2, "lines"),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(
+      size = rel(1.1), hjust = 0, margin = margin(0, 0, 0, 5)
+    ),
+    legend.spacing = unit(0, "cm"),
+    legend.box.spacing = unit(0.5, "cm"),
+    legend.key.width = unit(1, "cm"),
+    plot.title = element_text(
+      hjust = 0, color = "black",
+      size = rel(2), margin = margin(t = 5, b = 5)
+    ),
+    plot.subtitle = element_text(
+      hjust = 0, color = "grey30",
+      lineheight = 0.8, size = rel(1.2), 
+      margin = margin(10, 0, 10, 0)
+    ),
+    plot.title.position = "plot",
+    plot.caption = element_text(
+      color = "grey50", size = rel(1.1), hjust = 1,
+      margin = margin(15, 0, 0, 0)
+    ),
+    plot.caption.position = "plot",
+    plot.margin = margin(rep(20, 4))
+  )
+
+# set table theme
+tbl_theme <-
+  function(data, width = 100, alignment = "center") {
+    data |>
+      tab_source_note(
+        source_note = "Source: FBref & Transfermarkt Via {worldfootballR}"
+      ) |>
+      tab_options(
+        footnotes.marks = "standard",
+        footnotes.spec_ref = "^xb", 
+        footnotes.spec_ftr = "(x)",
+        table.width = pct(width), 
+        table.align = alignment,
+        table.font.names = "Inter"
+      ) |> 
+      tab_style(
+        style = cell_text(align = "left"),
+        locations = list(cells_source_notes(), cells_footnotes())
+      )
+  }
+
+# load data
+club_resources <- 
+  readr::read_rds(
+    here::here("bvb", "money-in-football", "data", "club_resources.rds")
+  )
+```
+
+```{r}
+
+fit_mlms <- 
+  function(data) {
+    lmer(
+      value ~ 1 + demean_squad + double_mean_club + time + 
+        (1 + demean_squad | league/squad) + (1 | season),
+      data = data, REML = TRUE,
+      control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 200000))
+    )
+  }
+
+models <-
+  club_resources |>
+  mutate(
+    squad_value = log(squad_value),
+    mean_club = mean(squad_value),
+    demean_squad = squad_value - mean_club,
+    .by = squad
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(pts, xgd, gd),
+    names_to = "outcome",
+    values_to = "value"
+  ) |>
+  mutate(
+    double_mean_club = mean_club - mean(squad_value),
+    value = value/mp,
+    time = as.numeric(season) - 1,
+    outcome =
+      case_when(
+        outcome == "pts" ~ "Points",
+        outcome == "gd" ~ "Goal Difference",
+        outcome == "xgd" ~ "xG Difference",
+        .default = outcome
+      )
+  ) |>
+  filter(!is.na(value)) |> 
+  tidyr::nest(.by = c(outcome)) |> 
+  mutate(
+    model = purrr::map(data, fit_mlms),
+    summary = purrr::map(model, broom.mixed::glance),
+    coefs = purrr::map(model, ~ broom.mixed::tidy(.x, conf.int = TRUE)),
+    preds = purrr::map(model, ~ predict(.x))
+  )
+```
+
+```{r}
+models |>
+  filter(outcome == "Points") |> 
+  tidyr::unnest(c(data, preds)) |> 
+  mutate(
+    value = value * mp,
+    preds = round(preds * mp)
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(value, preds), names_to = "type", values_to = "points"
+  ) |> 
+  mutate(
+    type = 
+      case_when(
+        type == "value" ~ "Total Points",
+        type == "preds" ~ "Predicted Points",
+        .default = type
+      )
+  ) |> 
+  filter(
+    squad %in% c(
+      "Bayer Leverkusen", "Bayern Munich", "Borussia Dortmund", "RB Leipzig"
+    )
+  ) |>
+  ggplot(aes(season, points, group = type, linetype = type)) +
+  geom_smooth(
+    method = lm, formula = y ~ splines::ns(x, 3), 
+    linewidth = 0.5, se = FALSE, colour = "#343a40"
+  ) +
+  geom_point(aes(fill = type), shape = 21, size = 1.2, stroke = 1) +
+  guides(fill = guide_legend(override.aes = list(size = 2))) + 
+  scale_fill_manual(values = c("white", "#343a40")) +
+  scale_linetype_manual(values = c("dashed", "solid")) +
+  scale_x_discrete(
+    expand = c(0.05, 0.05), 
+    breaks = c("2013/14", "2015/16", "2017/18", "2019/20", "2021/22", "2023/24")
+  ) +
+  facet_wrap(facets = vars(squad), nrow = 3, scales = "free_x") +
+  labs(
+    title = "Bundesliga Top Four's Performances Above/Below Expectations",
+    subtitle = 
+      stringr::str_wrap(
+        glue::glue(
+          "Comparing Bayer Leverkusen, Bayern Munich, Borussia Dortmund, & RB ",
+          "Leipzig's total and predicted points in the Bundesliga from 2012/13 ",
+          "to 2023/24, conditional on squad market values per season."
+        ),
+        width = 110
+      ),
+    x = NULL, y = NULL,
+    caption = 
+      "Visualisation: Paul Johnson | Data: FBref & Transfermarkt Via {worldfootballR}"
+  )
+
+ggsave(
+  here::here("bvb", "money-in-football", "figures", "performance.png"), 
+  height = 14, width = 12.5, dpi = 120
+)
+```
+
+```{r}
+
+models |>
+  filter(outcome == "Points") |>
+  tidyr::unnest(c(data, preds)) |>
+  filter(n() > 3, .by = squad) |>
+  filter(league == "Bundesliga") |> 
+  mutate(
+    value = value * mp,
+    preds = round(preds * mp)
+  ) |>
+  summarise(
+    mp = sum(mp),
+    avg_ppg = sum(value)/mp,
+    pred_ppg = sum(preds)/mp,
+    pct_diff = (avg_ppg / pred_ppg) - 1,
+    .by = c(squad, league)
+  ) |>
+  # min_max(order_by = pct_diff, n = 3, by = league) |>
+  select(squad, mp, avg_ppg, pred_ppg, pct_diff) |> 
+  arrange(desc(pct_diff)) |> 
+  gt(rowname_col = "squad") |>
+  gt::tab_header(
+    title = "Bundesliga Performances Above/Below Expectations",
+    subtitle = 
+    glue::glue(
+    "Bundesliga performance rankings based on each team's total points as a ",
+    "percentage over/under their predicted points in the league from 2012/13 ",
+    "to 2023/24, conditional on squad market values per season. Minimum 3 seasons ",
+    "in the Bundesliga.")
+    ) |> 
+  cols_label(
+    mp = "Matches Played",
+    avg_ppg = "Average",
+    pred_ppg = "Predicted",
+    pct_diff ~ "Over/Under"
+  ) |>
+  tab_spanner(
+    label = "Points Per Game",
+    columns = c(avg_ppg, pred_ppg)
+  ) |> 
+  fmt_number(columns = c(avg_ppg, pred_ppg, pct_diff), decimals = 2) |> 
+  fmt_percent(columns = pct_diff)  |>  
+  cols_align(align = "center", columns = c(mp, avg_ppg, pred_ppg, pct_diff)) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_row_groups()
+  ) |>
+  tbl_theme() |> 
+  gtsave(
+    here::here("bvb", "money-in-football", "figures", "buli_performance.png"),
+    expand = 10
+    )
+```
