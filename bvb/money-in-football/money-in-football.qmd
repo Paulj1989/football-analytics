@@ -133,6 +133,199 @@ models <-
 ```
 
 ```{r}
+
+club_resources |> 
+  filter(league == "Bundesliga") |> 
+  summarise(squad_value = mean(squad_value), .by = squad) |> 
+  arrange(desc(squad_value)) |> 
+  slice_head(n = 5) |> 
+  gt(rowname_col = "squad") |> 
+  tab_header(
+    title = "Average Squad Values Across Seasons in the Bundesliga",
+    subtitle =
+    glue::glue(
+    "Mean average squad market values in the Bundesliga, from 2012/13 to 2023/24, ",
+    "according to Transfermarkt player values."
+    )
+  ) |> 
+  cols_label(squad_value = "Squad Values") |>
+  fmt_currency(currency = "euro", suffixing = TRUE) |> 
+  cols_align(align = "center", columns = is.numeric) |>
+  tbl_theme() |> 
+  gtsave(
+    here::here("bvb", "money-in-football", "figures", "buli_squad_values.png"),
+    expand = 10
+    )
+
+
+models |> 
+  tidyr::unnest(c(data, preds)) |> 
+  filter(outcome == "Points" & league == "Bundesliga") |> 
+  mutate(pts = value) |> 
+  select(squad, season, pts, squad_value, preds) |> 
+  mutate(
+    across(c(pts, preds), ~ .x * 34),
+    squad_value = exp(squad_value)
+  ) |> 
+  correlation::correlation()
+```
+
+```{r}
+
+models |>
+  tidyr::unnest(c(data, preds)) |> 
+  mutate(
+    outcome =
+      case_when(
+        outcome == "Points" ~ "pts",
+        outcome == "Goal Difference" ~ "gd",
+        outcome == "xG Difference" ~ "xgd",
+        .default = outcome
+      )
+  ) |> 
+  filter(league == "Bundesliga") |> 
+  select(outcome, squad, season, preds) |> 
+  tidyr::pivot_wider(names_from = outcome, values_from = preds) |> 
+  select(-xgd) |> 
+  mutate(
+    across(where(is.numeric), ~ .x * 34),
+    ranking = min_rank(pick(pts, gd)),
+    ranking = min_rank(desc(ranking)),
+    .by = season
+  ) |> 
+  summarise(
+    across(c(pts, ranking), mean),
+    .by = squad
+  ) |> 
+  arrange(ranking) |>
+  slice_head(n = 10) |> 
+  gt(rowname_col = "squad") |> 
+  gt::tab_header(
+    title = "Average Predicted Rankings Across Seasons in the Bundesliga",
+    subtitle =
+    glue::glue(
+    "Mean average ranking in the Bundesliga, from 2012/13 to 2023/24, based on ",
+    "each season's predicted rankings calculated from the predicted points and ",
+    "goal difference."
+    )
+  ) |> 
+  tab_spanner(columns = c(pts, ranking), label = "Mean Average") |> 
+  cols_label(
+    pts = "Points",
+    ranking = "Ranking"
+  ) |>
+  fmt_number(columns = pts, decimals = 0) |> 
+  fmt_number(columns = ranking, decimals = 2) |> 
+  cols_align(align = "center", columns = is.numeric) |>
+  tbl_theme() |> 
+  gtsave(
+    here::here("bvb", "money-in-football", "figures", "buli_rankings.png"),
+    expand = 10
+    )
+```
+
+```{r}
+
+plot_data <- 
+  models |>
+  tidyr::unnest(c(data, preds)) |> 
+  mutate(
+    outcome =
+      case_when(
+        outcome == "Points" ~ "pts",
+        outcome == "Goal Difference" ~ "gd",
+        outcome == "xG Difference" ~ "xgd",
+        .default = outcome
+      )
+  ) |> 
+  filter(league == "Bundesliga") |> 
+  select(outcome, squad, season, preds) |> 
+  tidyr::pivot_wider(names_from = outcome, values_from = preds) |> 
+  select(-xgd) |> 
+  mutate(
+    across(where(is.numeric), ~ .x * 34),
+    ranking = min_rank(pick(pts, gd)),
+    ranking = min_rank(desc(ranking)),
+    squad = case_when(
+      squad == "Borussia Mönchengladbach" ~ "Mönchengladbach",
+      .default = squad
+      ),
+    team_colour = case_when(
+      squad == "Borussia Dortmund" ~ "#ffa600",
+      squad == "Bayern Munich" ~ "#DB4254",
+      squad == "RB Leipzig" ~ "#0c2043",
+      squad == "Bayer Leverkusen" ~ "#BF3030",
+      squad == "Wolfsburg" ~ "#79B350",
+      squad == "Schalke" ~ "#004D9D",
+      .default = "grey60"
+      ),
+    team_size_alpha = case_when(
+      squad %in% 
+        c(
+          "Borussia Dortmund", "Bayern Munich", "RB Leipzig", 
+          "Bayer Leverkusen", "Wolfsburg", "Schalke"
+          ) ~ 1,
+      .default = 0.3
+      ),
+    .by = season
+  ) |> 
+  filter(n() > 3, .by = squad)
+
+plot_data |> 
+  ggplot(
+    aes(
+      season, ranking, group = squad, colour = team_colour, 
+      alpha = team_size_alpha, linewidth = team_size_alpha
+      )
+    ) +
+  ggbump::geom_bump(smooth = 12) +
+  geom_point(shape = 21, size = 4, stroke = 1.2, fill = "white") +
+  ggrepel::geom_text_repel(
+    data = 
+      plot_data |> 
+      filter(row_number() >= (n()), .by = squad),
+    aes(
+      x = "2023/24", y = ranking, colour = team_colour,
+      label = squad
+    ),
+    nudge_x = 2.5, nudge_y = 0.25, box.padding = 0.25, hjust = 0.5, direction="y",
+    point.padding = 0.25,  min.segment.length = Inf, max.overlaps = Inf,
+    force = 1, size = 7, family = "Inter"
+  ) +
+  scale_x_discrete(
+    breaks = c("2013/14", "2015/16", "2017/18", "2019/20", "2021/22", "2023/24")
+  ) +
+  scale_y_reverse(
+    breaks = 1:18,
+    ) +
+  scale_colour_identity() +
+  scale_alpha_identity() +
+  scale_linewidth_identity() +
+  labs(
+    title = "Predicted League Standings Per Season in the Bundesliga", 
+    subtitle =
+      stringr::str_wrap(
+        glue::glue(
+          "Comparing Bayer Leverkusen, Bayern Munich, Borussia Dortmund, RB ",
+          "Leipzig, Schalke, and Wolfsburg's predicted Bundesliga standings ",
+          "from 2012/13 to 2023/24. Predictions based on each team's predicted ",
+          "points and goal difference per season, conditional on squad values. ",
+          "Minimum three seasons in the Bundesliga."
+          ), width = 120
+        ),
+    x = NULL, y = NULL,
+    caption = 
+      "Visualisation: Paul Johnson | Data: FBref & Transfermarkt Via {worldfootballR}"
+    ) +
+  theme(panel.grid.major.y = element_blank())
+
+ggsave(
+  here::here("bvb", "money-in-football", "figures", "buli_standings.png"), 
+  height = 18, width = 14, dpi = 120
+)
+```
+
+```{r}
 models |>
   filter(outcome == "Points") |> 
   tidyr::unnest(c(data, preds)) |> 
@@ -159,10 +352,9 @@ models |>
   ggplot(aes(season, points, group = type, linetype = type)) +
   geom_smooth(
     method = lm, formula = y ~ splines::ns(x, 3), 
-    linewidth = 0.5, se = FALSE, colour = "#343a40"
+    linewidth = 1, se = FALSE, colour = "#343a40"
   ) +
-  geom_point(aes(fill = type), shape = 21, size = 1.2, stroke = 1) +
-  guides(fill = guide_legend(override.aes = list(size = 2))) + 
+  geom_point(aes(fill = type), shape = 21, size = 3.5, stroke = 1.2) +
   scale_fill_manual(values = c("white", "#343a40")) +
   scale_linetype_manual(values = c("dashed", "solid")) +
   scale_x_discrete(
@@ -187,7 +379,7 @@ models |>
   )
 
 ggsave(
-  here::here("bvb", "money-in-football", "figures", "performance.png"), 
+  here::here("bvb", "money-in-football", "figures", "buli_performance.png"), 
   height = 14, width = 12.5, dpi = 120
 )
 ```
@@ -210,7 +402,6 @@ models |>
     pct_diff = (avg_ppg / pred_ppg) - 1,
     .by = c(squad, league)
   ) |>
-  # min_max(order_by = pct_diff, n = 3, by = league) |>
   select(squad, mp, avg_ppg, pred_ppg, pct_diff) |> 
   arrange(desc(pct_diff)) |> 
   gt(rowname_col = "squad") |>
@@ -242,7 +433,7 @@ models |>
   ) |>
   tbl_theme() |> 
   gtsave(
-    here::here("bvb", "money-in-football", "figures", "buli_performance.png"),
+    here::here("bvb", "money-in-football", "figures", "buli_performance_table.png"),
     expand = 10
     )
 ```
