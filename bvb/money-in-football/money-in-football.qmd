@@ -442,13 +442,10 @@ models |>
 
 ```{r}
 
-player_values_raw <- 
-  worldfootballR::tm_player_market_values(
-    country_name = "Germany", start_year = 2024
-  )
-
 squad_values <- 
-  player_values_raw |>
+  worldfootballR::tm_player_market_values(
+    country_name = c("England", "Germany"), start_year = 2024
+  ) |>
   dplyr::mutate(
     league = comp_name,
     season = season_start_year
@@ -467,8 +464,10 @@ squad_values <-
       )
   )
 
-season_preds <- 
-  squad_values |> 
+buli_preds <- 
+  club_resources |> 
+  select(squad, league, season, squad_value) |> 
+  full_join(squad_values) |>
   mutate(
     squad_value = log(squad_value),
     mean_club = mean(squad_value),
@@ -477,14 +476,15 @@ season_preds <-
   ) |> 
   mutate(
     double_mean_club = mean_club - mean(squad_value),
-    time = 12
-  )
+    time = as.numeric(season) - 1
+  ) |> 
+  filter(season == "2024/25" & league == "Bundesliga") 
 
-season_preds |> 
+buli_preds |> 
   mutate(
-    pts = predict(models$model[[1]], season_preds, allow.new.levels = TRUE) * 34,
-    gd = predict(models$model[[2]], season_preds, allow.new.levels = TRUE) * 34,
-    xgd = predict(models$model[[3]], season_preds, allow.new.levels = TRUE) * 34
+    pts = predict(models$model[[1]], buli_preds, allow.new.levels = TRUE) * 34,
+    gd = predict(models$model[[2]], buli_preds, allow.new.levels = TRUE) * 34,
+    xgd = predict(models$model[[3]], buli_preds, allow.new.levels = TRUE) * 34
     ) |> 
   arrange(desc(pts), desc(gd), desc(xgd)) |> 
   select(squad, pts, gd, xgd) |> 
@@ -541,6 +541,90 @@ season_preds |>
   tbl_theme() |> 
   gtsave(
     here::here("bvb", "money-in-football", "figures", "predicted_standings.png"),
+    expand = 10
+    )
+```
+
+
+```{r}
+
+prem_preds <- 
+  club_resources |> 
+  select(squad, league, season, squad_value) |> 
+  full_join(squad_values) |>
+  mutate(
+    squad_value = log(squad_value),
+    mean_club = mean(squad_value),
+    demean_squad = squad_value - mean_club,
+    .by = squad
+  ) |> 
+  mutate(
+    double_mean_club = mean_club - mean(squad_value),
+    time = as.numeric(season) - 1
+  ) |> 
+  filter(season == "2024/25" & league == "Premier League") 
+
+prem_preds |> 
+  mutate(
+    pts = predict(models$model[[1]], prem_preds, allow.new.levels = TRUE) * 38,
+    gd = predict(models$model[[2]], prem_preds, allow.new.levels = TRUE) * 38,
+    xgd = predict(models$model[[3]], prem_preds, allow.new.levels = TRUE) * 38
+    ) |> 
+  arrange(desc(pts), desc(gd), desc(xgd)) |> 
+  select(squad, pts, gd, xgd) |> 
+  gt(rowname_col = "squad") |> 
+  gt::tab_header(
+    title = "Predicted Premier League Standings 2024/25",
+    subtitle =
+    glue::glue(
+    "Predicted points, goal difference, and expected goals (xG) difference for ",
+    "the 2024/25 Premier League season. Predictions computed from a model estimating ",
+    "the effect of squad market values on football outcomes."
+    )
+  ) |> 
+  cols_label(
+    pts = "Points",
+    gd = "Goal Difference",
+    xgd = "xG Difference"
+  ) |>
+  fmt_number(columns = c(pts, gd), decimals = 0) |> 
+  fmt_number(columns = xgd, decimals = 1) |> 
+  cols_align(align = "center", columns = is.numeric) |>
+  tab_style(
+    style = cell_text(color = "#ffa62b"),
+    locations = cells_stub(rows = 1)
+  ) |>
+  tab_style(
+    style = cell_text(color = "#ffa62b"),
+    locations = cells_body(rows = 1, columns = everything())
+  ) |>
+  tab_style(
+    style = cell_text(color = "#2c6e49"),
+    locations = cells_stub(rows = 2:4)
+  ) |>
+  tab_style(
+    style = cell_text(color = "#2c6e49"),
+    locations = cells_body(rows = 2:4, columns = everything())
+  ) |>
+  tab_style(
+    style = cell_text(color = "#4c956c"),
+    locations = cells_stub(rows = 5:6)
+  ) |>
+  tab_style(
+    style = cell_text(color = "#4c956c"),
+    locations = cells_body(rows = 5:6, columns = everything())
+  ) |>
+  tab_style(
+    style = cell_text(color = "#DB4254"),
+    locations = cells_stub(rows = 18:20) 
+  ) |>
+  tab_style(
+    style = cell_text(color = "#DB4254"),
+    locations = cells_body(rows = 18:20, columns = everything())
+  ) |>
+  tbl_theme() |> 
+  gtsave(
+    here::here("bvb", "money-in-football", "figures", "epl_predicted_standings.png"),
     expand = 10
     )
 ```
