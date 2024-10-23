@@ -2182,13 +2182,17 @@
     },
     "worldfootballR": {
       "Package": "worldfootballR",
-      "Version": "0.6.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
+      "Version": "0.6.6.0001",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "JaseZiv",
+      "RemoteRepo": "worldfootballR",
+      "RemoteRef": "main",
+      "RemoteSha": "dc489beb6775e77ce66b7efe0965a4189ac9ec72",
       "Requirements": [
         "R",
         "cli",
-        "curl",
         "dplyr",
         "glue",
         "httr",
@@ -2213,7 +2217,7 @@
         "withr",
         "xml2"
       ],
-      "Hash": "fc3a2d390db065cb378dc1576a70b102"
+      "Hash": "c88fe5f3ec42cb672b1a5653d40ae143"
     },
     "xfun": {
       "Package": "xfun",
