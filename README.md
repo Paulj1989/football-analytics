@@ -6,17 +6,11 @@ As some of this has been done retroactively, the repository isn't exhaustive, an
 
 The archive folder contains pieces of work that are older and some of which has missing data or code. It's the rug I'm sweeping the worst of my code under, from before I was better at tracking what I'm doing...
 
-## Ongoing Work
+## Selected Work
 
-- [Money in Football](https://github.com/paulj1989/money-in-football)
-
-<img src="https://raw.githubusercontent.com/Paulj1989/money-in-football/main/output/01-exploratory_data_analysis_files/figure-gfm/weird-splines-1.png" width="1200">
-
-- [Game State Analysis](https://github.com/paulj1989/game-state)
+### [Game State Analysis](https://github.com/paulj1989/game-state)
 
 <img src="https://raw.githubusercontent.com/Paulj1989/game-state/main/figures/xg_comparison.png" width="1200">
-
-## Selected Work
 
 ### [Goalkeeper Analysis](bvb/goalkeeper-analysis)
 
