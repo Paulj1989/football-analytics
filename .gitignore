@@ -214,3 +214,5 @@ cython_debug/
 /_targets/
 /bvb/game-state/_targets/
 .vscode/settings.json
+
+.DS_Store
